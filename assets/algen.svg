@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" width="960" height="320" role="img" aria-labelledby="t d">
+<title id="t">AL-Gen+: attack simulation and IDS training data</title>
+<desc id="d">Research platform that generates synthetic and real attack traffic for intrusion-detection models: 12 attack types, over 275,000 payloads, one 22-column schema across both modes, and 14 public IDS datasets unified. Research Assistant, GJU DAIS Lab.</desc>
+<style>
+.m{font-family:ui-monospace,'Cascadia Code',Consolas,Menlo,monospace}
+.t{font-size:12px;fill:#8A8A8A}
+.l{font-size:15px;fill:#E6E6E6}
+.r{fill:#FF3B3B;font-weight:700}
+.a{fill:#FFB000}
+.h{font-size:56px;font-weight:800;fill:#FF3B3B;letter-spacing:-1px}
+.s{font:500 18px 'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;fill:#D0D0D0}
+.k{font-size:12px;font-weight:700;fill:#FFB000;letter-spacing:2px}
+.f{font-size:13px;fill:#9A9A9A}
+.cur{animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.cur{animation:none}}
+</style>
+<rect width="960" height="320" rx="18" fill="#0B0B0B"/>
+<rect x="32" y="30" width="580" height="260" rx="10" fill="#111111" stroke="#2A2A2A"/>
+<path d="M32 40a10 10 0 0 1 10-10h560a10 10 0 0 1 10 10v18H32Z" fill="#1A1A1A"/>
+<circle cx="52" cy="44" r="6" fill="#FF5F57"/><circle cx="72" cy="44" r="6" fill="#FEBC2E"/><circle cx="92" cy="44" r="6" fill="#28C840"/>
+<text x="322" y="48" text-anchor="middle" class="m t">al-gen-plus — IDS dataset generator</text>
+<g class="m l">
+  <text x="52" y="92"><tspan class="r">&gt;</tspan> <tspan class="a" x="76">mode</tspan><tspan x="166">synthetic | real attack (isolated VM)</tspan></text>
+  <text x="52" y="120"><tspan class="r">&gt;</tspan> <tspan class="a" x="76">network</tspan><tspan x="166">SYN · UDP · Nmap SYN/NULL · Hulk · Slowloris</tspan></text>
+  <text x="52" y="148"><tspan class="r">&gt;</tspan> <tspan class="a" x="76">web</tspan><tspan x="166">SQLi · blind SQLi · CMDi · XSS ×3 (DVWA)</tspan></text>
+  <text x="52" y="176"><tspan class="r">&gt;</tspan> <tspan class="a" x="76">payloads</tspan><tspan x="166">275,280+</tspan></text>
+  <text x="52" y="204"><tspan class="r">&gt;</tspan> <tspan class="a" x="76">schema</tspan><tspan x="166">22 columns, identical in both modes</tspan></text>
+  <text x="52" y="232"><tspan class="r">&gt;</tspan> <tspan class="a" x="76">datasets</tspan><tspan x="166">14 public IDS sets unified</tspan></text>
+  <text x="52" y="264"><tspan class="r">&gt;</tspan> <tspan class="cur">█</tspan></text>
+</g>
+<g class="m">
+  <text x="646" y="66" class="k">RESEARCH · GJU DAIS LAB</text>
+  <text x="642" y="132" class="h">AL-Gen+</text>
+  <text x="646" y="170" class="s">AI-powered attack simulation</text>
+  <text x="646" y="194" class="s">and IDS training data</text>
+  <text x="646" y="244" class="f">Research Assistant · 2025–2026</text>
+  <text x="646" y="266" class="f">Basis of two research papers</text>
+</g>
+</svg>

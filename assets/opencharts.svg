@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" width="960" height="320" role="img" aria-labelledby="t d">
+<title id="t">OpenCharts: 115 chart types with live, copyable code</title>
+<desc id="d">A zero-build library of 115 chart types. Every chart opens in a studio where the data, colours and options are live and the HTML, CSS and JavaScript update as you edit. Match my data narrows the gallery to charts that can read your table.</desc>
+<defs><pattern id="g" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#EEF0F6"/></pattern>
+<filter id="sh" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#1D1B2E" flood-opacity=".08"/></filter></defs>
+<style>
+.s{font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif}
+.m{font-family:ui-monospace,'Cascadia Code',Consolas,Menlo,monospace}
+.h{font-size:50px;font-weight:800;fill:#1D1B2E;letter-spacing:-1.5px}
+.p{font-size:18px;fill:#4A4860}
+.b{font-size:11px;fill:#FFFFFF}
+.f{font-size:13px;fill:#6C63D8;font-weight:700}
+</style>
+<rect width="960" height="320" rx="18" fill="#FFFFFF"/>
+<rect width="960" height="320" rx="18" fill="url(#g)"/>
+<rect x=".5" y=".5" width="959" height="319" rx="18" fill="none" stroke="#E2E4EE"/>
+<g class="m" transform="translate(48 40)">
+  <rect width="56" height="20" rx="3" fill="#555"/><rect x="50" width="40" height="20" rx="3" fill="#6C63D8"/><rect x="50" width="6" height="20" fill="#6C63D8"/><text x="7" y="14" class="b">license</text><text x="57" y="14" class="b">MIT</text>
+  <rect x="100" width="52" height="20" rx="3" fill="#555"/><rect x="146" width="36" height="20" rx="3" fill="#16916A"/><rect x="146" width="6" height="20" fill="#16916A"/><text x="107" y="14" class="b">charts</text><text x="153" y="14" class="b">115</text>
+  <rect x="192" width="44" height="20" rx="3" fill="#555"/><rect x="230" width="44" height="20" rx="3" fill="#2F76C9"/><rect x="230" width="6" height="20" fill="#2F76C9"/><text x="199" y="14" class="b">build</text><text x="237" y="14" class="b">none</text>
+</g>
+<g class="s">
+  <text x="46" y="122" class="h">OpenCharts</text>
+  <text x="48" y="160" class="p">115 chart types you edit live and copy</text>
+  <text x="48" y="184" class="p">as HTML, CSS and JavaScript.</text>
+  <text x="48" y="222" class="p">Bring a table and it shows only the</text>
+  <text x="48" y="246" class="p">charts that can actually read it.</text>
+</g>
+<text x="48" y="290" class="m f">5 renderers · Playwright E2E in CI · zero build step</text>
+<g filter="url(#sh)">
+  <rect x="540" y="36" width="180" height="120" rx="12" fill="#FFFFFF" stroke="#E2E4EE"/>
+  <rect x="736" y="36" width="180" height="120" rx="12" fill="#FFFFFF" stroke="#E2E4EE"/>
+  <rect x="540" y="168" width="180" height="120" rx="12" fill="#FFFFFF" stroke="#E2E4EE"/>
+  <rect x="736" y="168" width="180" height="120" rx="12" fill="#FFFFFF" stroke="#E2E4EE"/>
+</g>
+<g fill="#6C63D8"><rect x="562" y="100" width="20" height="40" rx="3"/><rect x="590" y="72" width="20" height="68" rx="3"/><rect x="618" y="88" width="20" height="52" rx="3"/><rect x="646" y="58" width="20" height="82" rx="3" fill="#16916A"/><rect x="674" y="80" width="20" height="60" rx="3"/></g>
+<line x1="556" y1="140.5" x2="704" y2="140.5" stroke="#D5D7E2"/>
+<g transform="translate(826 96)" fill="none" stroke-width="18">
+  <circle r="36" stroke="#6C63D8" stroke-dasharray="90 136.2" transform="rotate(-90)"/>
+  <circle r="36" stroke="#16916A" stroke-dasharray="62 164.2" stroke-dashoffset="-90" transform="rotate(-90)"/>
+  <circle r="36" stroke="#2F76C9" stroke-dasharray="46 180.2" stroke-dashoffset="-152" transform="rotate(-90)"/>
+  <circle r="36" stroke="#E8833A" stroke-dasharray="28.2 198" stroke-dashoffset="-198" transform="rotate(-90)"/>
+</g>
+<polyline points="560,266 590,240 620,250 650,214 680,224 704,192" fill="none" stroke="#2F76C9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<g fill="#2F76C9"><circle cx="560" cy="266" r="4"/><circle cx="590" cy="240" r="4"/><circle cx="620" cy="250" r="4"/><circle cx="650" cy="214" r="4"/><circle cx="680" cy="224" r="4"/><circle cx="704" cy="192" r="4"/></g>
+<g fill-opacity=".55">
+  <path d="M756 190C820 190 832 214 896 214V232C832 232 820 208 756 208Z" fill="#6C63D8"/>
+  <path d="M756 212C820 212 832 246 896 246V262C832 262 820 228 756 228Z" fill="#16916A"/>
+  <path d="M756 232C820 232 832 196 896 196V210C832 210 820 246 756 246Z" fill="#E8833A"/>
+</g>
+<rect x="750" y="188" width="6" height="60" rx="2" fill="#1D1B2E"/><rect x="896" y="192" width="6" height="72" rx="2" fill="#1D1B2E"/>
+</svg>

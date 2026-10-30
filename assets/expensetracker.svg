@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" width="960" height="320" role="img" aria-labelledby="t d">
+<title id="t">ExpenseTracker: a multi-currency personal finance PWA</title>
+<desc id="d">Shows the month's balance in every currency you hold, switching with a tap. Vanilla JavaScript, no framework, no server, no account, and it works offline.</desc>
+<defs><clipPath id="c"><rect width="960" height="320" rx="18"/></clipPath></defs>
+<style>
+.s{font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif}
+.k{font:700 12px ui-monospace,'Cascadia Code',Consolas,Menlo,monospace;fill:#2A4D0F;letter-spacing:2px}
+.h{font-size:48px;font-weight:800;fill:#0E0F0C;letter-spacing:-1.5px}
+.p{font-size:19px;fill:#545A4F}
+.e{font-size:19px;font-weight:700;fill:#163300}
+.f{font-size:14px;fill:#545A4F}
+.lb{font-size:12px;font-weight:600;fill:#163300}
+.am{font-size:28px;font-weight:800;fill:#163300;letter-spacing:-.5px}
+.pl{font-size:12px;font-weight:700}
+.a1{animation:sw 6s infinite}.a2{animation:sw 6s infinite -3s}
+@keyframes sw{0%,45%{opacity:1}50%,95%{opacity:0}100%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.a1,.a2{animation:none}.a2{opacity:0}}
+</style>
+<g clip-path="url(#c)">
+<rect width="960" height="320" fill="#F6F6F4"/>
+<circle cx="760" cy="330" r="190" fill="#9FE870" opacity=".35"/>
+<g class="s">
+  <text x="48" y="58" class="k">PWA · VANILLA JS · WORKS OFFLINE</text>
+  <text x="46" y="118" class="h">ExpenseTracker</text>
+  <text x="48" y="158" class="p">Your month's balance in every currency</text>
+  <text x="48" y="182" class="p">you hold, one tap to switch.</text>
+  <text x="48" y="222" class="e">No framework. No server. No account.</text>
+  <text x="48" y="284" class="f">13 built-in categories · add your own with 40 icons × 16 colours</text>
+</g>
+<g transform="translate(640 34)" class="s">
+  <rect width="250" height="320" rx="38" fill="#0E0F0C"/>
+  <rect x="10" y="10" width="230" height="310" rx="30" fill="#FFFFFF"/>
+  <rect x="95" y="18" width="60" height="8" rx="4" fill="#0E0F0C"/>
+  <rect x="24" y="40" width="202" height="120" rx="20" fill="#9FE870"/>
+  <text x="40" y="66" class="lb">This month</text>
+  <text x="40" y="104" class="am a1">JD 1,271.60</text>
+  <text x="40" y="104" class="am a2">$1,792.96</text>
+  <rect x="40" y="122" width="38" height="24" rx="12" fill="#163300" class="a1"/><text x="59" y="138" text-anchor="middle" class="pl a1" fill="#9FE870">JD</text>
+  <rect x="84" y="122" width="38" height="24" rx="12" fill="#163300" class="a2"/><text x="103" y="138" text-anchor="middle" class="pl a2" fill="#9FE870">$</text>
+  <text x="59" y="138" text-anchor="middle" class="pl a2" fill="#163300">JD</text>
+  <text x="103" y="138" text-anchor="middle" class="pl a1" fill="#163300">$</text>
+  <text x="147" y="138" text-anchor="middle" class="pl" fill="#163300">€</text>
+  <rect x="24" y="172" width="96" height="58" rx="14" fill="#F0F1ED"/><text x="36" y="194" class="lb" fill="#545A4F">Money in</text><rect x="36" y="206" width="56" height="10" rx="5" fill="#2F5711"/>
+  <rect x="130" y="172" width="96" height="58" rx="14" fill="#F0F1ED"/><text x="142" y="194" class="lb" fill="#545A4F">Money out</text><rect x="142" y="206" width="40" height="10" rx="5" fill="#A8200D"/>
+  <g fill="#9FE870"><rect x="34" y="262" width="22" height="30" rx="4"/><rect x="64" y="248" width="22" height="44" rx="4"/><rect x="94" y="270" width="22" height="22" rx="4"/><rect x="124" y="252" width="22" height="40" rx="4" fill="#163300"/><rect x="154" y="258" width="22" height="34" rx="4"/><rect x="184" y="244" width="22" height="48" rx="4"/></g>
+</g>
+</g>
+</svg>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" width="960" height="320" role="img" aria-labelledby="t d">
+<title id="t">GJU German Year Kit</title>
+<desc id="d">A free static website for German Jordanian University students planning the 20-week German Year internship: a rules guide, job boards with local filtering, and a browser-only profile editor.</desc>
+<defs><clipPath id="c"><rect width="960" height="320" rx="18"/></clipPath></defs>
+<style>
+.k{font:700 12px ui-monospace,'Cascadia Code',Consolas,Menlo,monospace;fill:#1F6BAD;letter-spacing:2px}
+.h{font:700 46px Georgia,'Times New Roman',serif;fill:#0C1A28;letter-spacing:-.5px}
+.p{font:400 19px Georgia,'Times New Roman',serif;fill:#2E4358;font-style:italic}
+.e{font:700 17px 'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;fill:#8F5500}
+.w{font:600 11px ui-monospace,'Cascadia Code',Consolas,Menlo,monospace;fill:#FFFFFF}
+.wd{fill:#0C1A28}
+</style>
+<g clip-path="url(#c)">
+<rect width="960" height="320" fill="#F4F7FA"/>
+<rect width="14" height="107" fill="#111111"/><rect y="107" width="14" height="106" fill="#DD0000"/><rect y="213" width="14" height="107" fill="#FFCE00"/>
+</g>
+<text x="56" y="62" class="k">STATIC · NO BUILD · LIGHT &amp; DARK</text>
+<text x="54" y="122" class="h">GJU German Year Kit</text>
+<text x="56" y="162" class="p">The 20-week internship in Germany, from the</text>
+<text x="56" y="188" class="p">first application to the final report.</text>
+<text x="56" y="236" class="e">Guide  ·  Job boards  ·  Profile editor</text>
+<text x="56" y="284" class="k" fill="#596B7D">AN INDEPENDENT STUDENT PROJECT</text>
+<g transform="translate(624 40)">
+  <text x="0" y="0" class="k" fill="#596B7D">20 WEEKS</text>
+  <g transform="translate(0 16)">
+    <g><rect width="50" height="44" rx="6" fill="#1F6BAD"/><text x="8" y="17" class="w">1</text></g>
+    <g><rect x="58" width="50" height="44" rx="6" fill="#1F6BAD"/><text x="66" y="17" class="w">2</text></g>
+    <g><rect x="116" width="50" height="44" rx="6" fill="#1F6BAD"/><text x="124" y="17" class="w">3</text></g>
+    <g><rect x="174" width="50" height="44" rx="6" fill="#1F6BAD"/><text x="182" y="17" class="w">4</text></g>
+    <g><rect x="232" width="50" height="44" rx="6" fill="#1F6BAD"/><text x="240" y="17" class="w">5</text></g>
+    <g><rect y="52" width="50" height="44" rx="6" fill="#1F8BCC"/><text x="8" y="69" class="w">6</text></g>
+    <g><rect x="58" y="52" width="50" height="44" rx="6" fill="#1F8BCC"/><text x="66" y="69" class="w">7</text></g>
+    <g><rect x="116" y="52" width="50" height="44" rx="6" fill="#1F8BCC"/><text x="124" y="69" class="w">8</text></g>
+    <g><rect x="174" y="52" width="50" height="44" rx="6" fill="#1F8BCC"/><text x="182" y="69" class="w">9</text></g>
+    <g><rect x="232" y="52" width="50" height="44" rx="6" fill="#1F8BCC"/><text x="240" y="69" class="w">10</text></g>
+    <g><rect y="104" width="50" height="44" rx="6" fill="#9CC3E4"/><text x="8" y="121" class="w wd">11</text></g>
+    <g><rect x="58" y="104" width="50" height="44" rx="6" fill="#9CC3E4"/><text x="66" y="121" class="w wd">12</text></g>
+    <g><rect x="116" y="104" width="50" height="44" rx="6" fill="#9CC3E4"/><text x="124" y="121" class="w wd">13</text></g>
+    <g><rect x="174" y="104" width="50" height="44" rx="6" fill="#9CC3E4"/><text x="182" y="121" class="w wd">14</text></g>
+    <g><rect x="232" y="104" width="50" height="44" rx="6" fill="#9CC3E4"/><text x="240" y="121" class="w wd">15</text></g>
+    <g><rect y="156" width="50" height="44" rx="6" fill="#E9C27A"/><text x="8" y="173" class="w wd">16</text></g>
+    <g><rect x="58" y="156" width="50" height="44" rx="6" fill="#E9C27A"/><text x="66" y="173" class="w wd">17</text></g>
+    <g><rect x="116" y="156" width="50" height="44" rx="6" fill="#E9C27A"/><text x="124" y="173" class="w wd">18</text></g>
+    <g><rect x="174" y="156" width="50" height="44" rx="6" fill="#B86E00"/><text x="182" y="173" class="w">19</text></g>
+    <g><rect x="232" y="156" width="50" height="44" rx="6" fill="#B86E00"/><text x="240" y="173" class="w">20</text></g>
+  </g>
+  <text x="0" y="244" class="k" fill="#596B7D">FIND · APPLY · INTERN · REPORT</text>
+</g>
+</svg>

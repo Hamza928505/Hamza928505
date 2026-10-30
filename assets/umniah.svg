@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" width="960" height="320" role="img" aria-labelledby="t d">
+<title id="t">Umniah, Digital and IT: three summers, 2023 to 2025</title>
+<desc id="d">2023 front end: 57 responsive pages. 2024 back end: a login and user-management system with full CRUD in C# and .NET. 2025 full stack: a customer-complaints system built alone, still in production.</desc>
+<style>
+.k{font:700 12px ui-monospace,'Cascadia Code',Consolas,Menlo,monospace;letter-spacing:2px}
+.h{font:800 34px 'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;fill:#F3EEFF;letter-spacing:-.5px}
+.p{font:500 16px 'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;fill:#B9A9DB}
+.y{font:800 30px 'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;fill:#C6F432}
+.r{font:700 13px ui-monospace,'Cascadia Code',Consolas,Menlo,monospace;fill:#FF7AB8;letter-spacing:2px}
+.l{font:600 17px 'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;fill:#F3EEFF}
+.on{fill:#C6F432}
+</style>
+<rect width="960" height="320" rx="18" fill="#1B1033"/>
+<text x="48" y="54" class="k" fill="#C6F432">EXPERIENCE · UMNIAH · DIGITAL &amp; IT DEPARTMENT</text>
+<text x="46" y="98" class="h">Three summers, one signal getting stronger</text>
+<text x="48" y="126" class="p">Dual Studies programme · July to October each year, 2023 → 2025</text>
+<line x1="48" y1="164" x2="912" y2="164" stroke="#3A2A5C" stroke-width="2" stroke-dasharray="2 8" stroke-linecap="round"/>
+<g transform="translate(48 150)">
+  <rect x="0" y="22" width="10" height="14" rx="2" fill="#3A2A5C" class="on"/><rect x="15" y="12" width="10" height="24" rx="2" fill="#3A2A5C"/><rect x="30" y="2" width="10" height="34" rx="2" fill="#3A2A5C"/>
+  <text x="56" y="34" class="y">2023</text><text x="0" y="74" class="r">FRONT END</text>
+  <text x="0" y="104" class="l">57 responsive web pages</text>
+  <text x="0" y="128" class="p">HTML · CSS · JS · Bootstrap 5 · jQuery</text>
+</g>
+<g transform="translate(348 150)" class="c2">
+  <rect x="0" y="22" width="10" height="14" rx="2" fill="#3A2A5C" class="on"/><rect x="15" y="12" width="10" height="24" rx="2" fill="#3A2A5C" class="on b2"/><rect x="30" y="2" width="10" height="34" rx="2" fill="#3A2A5C"/>
+  <text x="56" y="34" class="y">2024</text><text x="0" y="74" class="r">BACK END</text>
+  <text x="0" y="104" class="l">Login + user management, full CRUD</text>
+  <text x="0" y="128" class="p">C# · .NET · REST APIs · SQL · Postman</text>
+</g>
+<g transform="translate(648 150)" class="c3">
+  <rect x="0" y="22" width="10" height="14" rx="2" fill="#3A2A5C" class="on"/><rect x="15" y="12" width="10" height="24" rx="2" fill="#3A2A5C" class="on b2"/><rect x="30" y="2" width="10" height="34" rx="2" fill="#3A2A5C" class="on b3"/>
+  <text x="56" y="34" class="y">2025</text><text x="0" y="74" class="r">FULL STACK</text>
+  <text x="0" y="104" class="l">Complaints system, built alone</text>
+  <text x="0" y="128" class="p">Still in production at Umniah today</text>
+</g>
+</svg>

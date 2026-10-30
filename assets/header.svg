@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="960" height="280" role="img" aria-labelledby="t d">
+<title id="t">Hamza Salameh</title>
+<desc id="d">Full-stack .NET developer working on edge AI and computer vision. Final-year Computer Science student at the German Jordanian University.</desc>
+<style>
+.n{font:800 66px 'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;fill:#141414;letter-spacing:-2px}
+.s{font:500 19px 'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;fill:#3d3a33}
+.m{font:700 12px ui-monospace,'Cascadia Code',Consolas,Menlo,monospace;fill:#6b665c;letter-spacing:2px}
+</style>
+<rect width="960" height="280" rx="18" fill="#F4F1EA"/>
+<text x="48" y="62" class="m">PORTFOLIO · AMMAN, JORDAN</text>
+<text x="44" y="140" class="n">Hamza Salameh</text>
+<text x="48" y="182" class="s">Full-stack .NET developer · Edge AI &amp; computer vision</text>
+<text x="48" y="210" class="s">Final-year Computer Science @ German Jordanian University</text>
+<text x="48" y="248" class="m">EVERY PROJECT GETS ITS OWN PALETTE →</text>
+<g transform="translate(606 56)">
+  <g><rect width="30" height="168" rx="6" fill="#1B1033"/><rect y="118" width="30" height="50" rx="6" fill="#C6F432"/></g>
+  <g><rect x="35" width="30" height="168" rx="6" fill="#050B14"/><rect x="35" y="118" width="30" height="50" rx="6" fill="#00D9FF"/></g>
+  <g><rect x="70" width="30" height="168" rx="6" fill="#F25C54"/><rect x="70" y="118" width="30" height="50" rx="6" fill="#F7B32B"/></g>
+  <g><rect x="105" width="30" height="168" rx="6" fill="#6C63D8"/><rect x="105" y="118" width="30" height="50" rx="6" fill="#16916A"/></g>
+  <g><rect x="140" width="30" height="168" rx="6" fill="#163300"/><rect x="140" y="118" width="30" height="50" rx="6" fill="#9FE870"/></g>
+  <g><rect x="175" width="30" height="168" rx="6" fill="#0B0B0B"/><rect x="175" y="118" width="30" height="50" rx="6" fill="#FF3B3B"/></g>
+  <g><rect x="210" width="30" height="168" rx="6" fill="#1F6BAD"/><rect x="210" y="118" width="30" height="50" rx="6" fill="#B86E00"/></g>
+  <g><rect x="245.5" y=".5" width="29" height="167" rx="6" fill="#FFFFFF" stroke="#C9C3B6"/><rect x="245" y="118" width="30" height="50" rx="6" fill="#222222"/></g>
+  <g><rect x="280" width="30" height="168" rx="6" fill="#160B2E"/><rect x="280" y="118" width="30" height="50" rx="6" fill="#FFE066"/></g>
+</g>
+</svg>

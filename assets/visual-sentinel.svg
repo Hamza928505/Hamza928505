@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" width="960" height="320" role="img" aria-labelledby="t d">
+<title id="t">Visual Sentinel: edge-AI stereo vision for drone detection</title>
+<desc id="d">Graduation project. Detects drones from synchronised stereo video and locates them in 3D on Raspberry Pi edge nodes with no cloud dependency. 107 field experiments, two independent depth paths.</desc>
+<defs>
+  <pattern id="g" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#0E2130" stroke-width="1"/></pattern>
+  <linearGradient id="sw" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#00D9FF" stop-opacity="0"/><stop offset="1" stop-color="#00D9FF" stop-opacity=".45"/></linearGradient>
+</defs>
+<style>
+.m{font-family:ui-monospace,'Cascadia Code',Consolas,Menlo,monospace}
+.k{font-size:13px;font-weight:700;fill:#00FF88;letter-spacing:2px}
+.h{font-size:44px;font-weight:800;fill:#E6F7FF;letter-spacing:5px}
+.p{font-size:17px;fill:#9FC3D1}
+.n{font-size:30px;font-weight:800;fill:#00D9FF}
+.u{font-size:11px;font-weight:700;fill:#7FA6B5;letter-spacing:1.5px}
+.f{font-size:13px;fill:#5B8394;letter-spacing:1px}
+.sweep{transform-origin:170px 160px;animation:spin 4s linear infinite}
+.blip{transform-origin:236px 114px;animation:ping 2s ease-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes ping{0%{transform:scale(.4);opacity:1}100%{transform:scale(2.6);opacity:0}}
+@media (prefers-reduced-motion:reduce){.sweep,.blip{animation:none}}
+</style>
+<rect width="960" height="320" rx="18" fill="#050B14"/>
+<rect width="960" height="320" rx="18" fill="url(#g)"/>
+<g fill="none" stroke="#00D9FF">
+  <circle cx="170" cy="160" r="40" stroke-opacity=".3"/><circle cx="170" cy="160" r="82" stroke-opacity=".3"/><circle cx="170" cy="160" r="124" stroke-opacity=".5"/>
+  <path d="M170 30V290M40 160H300" stroke-opacity=".25"/>
+</g>
+<path class="sweep" d="M170 160L294 160A124 124 0 0 0 257.7 72.3Z" fill="url(#sw)"/>
+<circle class="blip" cx="236" cy="114" r="6" fill="none" stroke="#00FF88" stroke-width="2"/>
+<g transform="translate(236 114)" stroke="#00FF88" stroke-width="2" fill="none">
+  <path d="M-7-7L7 7M7-7L-7 7"/><circle cx="-8" cy="-8" r="3.5"/><circle cx="8" cy="-8" r="3.5"/><circle cx="-8" cy="8" r="3.5"/><circle cx="8" cy="8" r="3.5"/>
+</g>
+<g stroke="#00D9FF" stroke-width="3" fill="none" stroke-linecap="square">
+  <path d="M30 40V22H48M310 40V22H292M30 280V298H48M310 280V298H292"/>
+</g>
+<g class="m">
+  <text x="350" y="56" class="k">GRADUATION PROJECT · GJU · 2025/26</text>
+  <text x="347" y="110" class="h">VISUAL SENTINEL</text>
+  <text x="350" y="142" class="p">Edge-AI stereo vision that detects drones</text>
+  <text x="350" y="164" class="p">and locates them in 3D. No cloud.</text>
+  <g transform="translate(350 190)">
+    <rect width="176" height="70" fill="#07131F" stroke="#123247"/><text x="14" y="36" class="n">107</text><text x="14" y="56" class="u">FIELD EXPERIMENTS</text>
+    <rect x="190" width="176" height="70" fill="#07131F" stroke="#123247"/><text x="204" y="36" class="n">2</text><text x="204" y="56" class="u">DEPTH ESTIMATORS</text>
+    <rect x="380" width="176" height="70" fill="#07131F" stroke="#123247"/><text x="394" y="36" class="n">0</text><text x="394" y="56" class="u">CLOUD DEPENDENCIES</text>
+  </g>
+  <text x="350" y="292" class="f">YOLOv8 · PyTorch · OpenCV · Raspberry Pi · C · Leaflet</text>
+</g>
+</svg>

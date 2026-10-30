@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 340" width="960" height="340" role="img" aria-labelledby="t d">
+<title id="t">Competitions</title>
+<desc id="d">IEEEXtreme 19.0 (2025, team Marx) and 18.0 (2024, team Waddledee), 24-hour programming contests with 19,000+ participants. Cyber Warriors CTF training with Jordan's National Cyber Security Center, 40 hours, 2024. GJU IT Hackathon app track with the app Titan, 2024, and the problem-solving track in 2024 and 2025. GJU 3030 competition, Technology of the Future, 2026.</desc>
+<defs><pattern id="sl" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 3.5H4" stroke="#1F1240"/></pattern>
+<clipPath id="c"><rect width="960" height="340" rx="18"/></clipPath></defs>
+<style>
+.m{font-family:ui-monospace,'Cascadia Code',Consolas,Menlo,monospace;text-transform:uppercase}
+.h{font-size:36px;font-weight:800;fill:#FFE066;letter-spacing:8px}
+.th{font-size:12px;font-weight:700;fill:#9B8CC4;letter-spacing:3px}
+.r{font-size:17px;font-weight:700;letter-spacing:1px}
+.a{fill:#5FF2FF}.b{fill:#F3EEFF}
+.y{fill:#FFE066}
+.ps{font-size:14px;font-weight:700;fill:#FF5FA2;letter-spacing:4px;animation:bl 1.2s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.ps{animation:none}}
+</style>
+<g clip-path="url(#c)"><rect width="960" height="340" fill="#160B2E"/><rect width="960" height="340" fill="url(#sl)"/></g>
+<g class="m">
+  <text x="480" y="62" text-anchor="middle" class="h">HIGH SCORES</text>
+  <text x="70" y="104" class="th">Event</text><text x="460" y="104" class="th">Entry</text><text x="890" y="104" text-anchor="end" class="th">Year</text>
+  <line x1="70" y1="116" x2="890" y2="116" stroke="#3A2A5C" stroke-dasharray="6 6"/>
+  <text x="70" y="146" class="r a">IEEEXtreme 19.0</text><text x="460" y="146" class="r b">Team Marx · 24h</text><text x="890" y="146" text-anchor="end" class="r y">2025</text>
+  <text x="70" y="178" class="r a">IEEEXtreme 18.0</text><text x="460" y="178" class="r b">Team Waddledee · 24h</text><text x="890" y="178" text-anchor="end" class="r y">2024</text>
+  <text x="70" y="210" class="r a">Cyber Warriors CTF</text><text x="460" y="210" class="r b">NCSC Jordan · 40h</text><text x="890" y="210" text-anchor="end" class="r y">2024</text>
+  <text x="70" y="242" class="r a">GJU IT Hackathon</text><text x="460" y="242" class="r b">App track · "Titan"</text><text x="890" y="242" text-anchor="end" class="r y">2024</text>
+  <text x="70" y="274" class="r a">GJU IT Hackathon</text><text x="460" y="274" class="r b">Problem solving</text><text x="890" y="274" text-anchor="end" class="r y">2024 · 25</text>
+  <text x="70" y="306" class="r a">GJU 3030</text><text x="460" y="306" class="r b">Technology of the Future</text><text x="890" y="306" text-anchor="end" class="r y">2026</text>
+  <text x="480" y="332" text-anchor="middle" class="ps">Press start</text>
+</g>
+</svg>
