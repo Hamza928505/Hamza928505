@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where I gained my experience</title>
+<!-- A choropleth on a globe: the OpenCharts choropleth idea (shade each country by its value), with the value also raised as height.
+     Libraries, fetched by the script below (all via jsDelivr):
+       three 0.170.0 (MIT) · https://threejs.org/
+       topojson-client 3.1.0 (ISC) · https://github.com/topojson/topojson-client
+       world-atlas (countries-50m) 2.0.2 (ISC) · https://github.com/topojson/world-atlas -->
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html { scrollbar-width: none; }
+body { margin: 0; background: transparent; color: #0f172a; font-family: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif; }
+.chart-card { margin: 0; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+
+#chart { position: relative; width: 100%; height: 440px; cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+#chart:active { cursor: grabbing; }
+#chart:focus-visible { outline: 2px solid #15803d; outline-offset: 2px; border-radius: 8px; }
+#chart canvas { display: block; width: 100%; height: 100%; filter: drop-shadow(0 16px 14px rgb(29 27 46 / .16)); }
+#chart.fail { display: grid; place-items: center; height: auto; min-height: 160px; padding: 24px; color: #475569; text-align: center; cursor: default; }
+
+/* labels ride on top of each country */
+.pin { position: absolute; left: 0; top: 0; padding: 3px 10px; border-radius: 999px; background: #1D1B2E; color: #fff; font: 700 12px/1.4 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif; white-space: nowrap; pointer-events: none; box-shadow: 0 4px 10px rgb(29 27 46 / .25); }
+.pin b { color: #9FE8C6; margin-left: 6px; }
+.tip { position: absolute; left: 0; top: 0; max-width: 240px; padding: 8px 12px; border-radius: 10px; background: #fff; border: 1px solid #e2e8f0; box-shadow: 0 8px 22px rgb(29 27 46 / .18); font-size: 12.5px; line-height: 1.45; color: #1D1B2E; pointer-events: none; opacity: 0; transition: opacity .12s; }
+.tip.on { opacity: 1; }
+.tip b { display: block; font-size: 13px; }
+
+.key { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 8px; font-size: 12px; color: #475569; }
+.key i { width: 120px; height: 10px; border-radius: 5px; background: linear-gradient(90deg, #9FD8BD, #16916A); }
+.key button { margin-left: auto; padding: 4px 12px; border: 1px solid #cbd5e1; border-radius: 999px; background: #fff; color: #1D1B2E; font: 600 12px/1.4 inherit; cursor: pointer; }
+.key button:hover { background: #f1f5f9; }
+.key em { font-style: normal; flex-basis: 100%; }
+
+.chart-data { margin-top: 14px; font-size: 13px; }
+.chart-data > summary { cursor: pointer; color: #475569; padding: 4px 2px; border-radius: 4px; }
+.chart-data > summary:focus-visible { outline: 2px solid #15803d; outline-offset: 2px; }
+.chart-data-scroll { overflow-x: auto; margin-top: 8px; }
+.chart-data table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+.chart-data caption { text-align: left; padding-bottom: 6px; color: #5c6b80; font-size: 12px; }
+.chart-data th, .chart-data td { padding: 4px 10px 4px 0; text-align: left; border-bottom: 1px solid rgba(128,128,128,.22); white-space: nowrap; }
+.chart-data td { font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+
+<figure class="chart-card" aria-describedby="chart-desc">
+  <p id="chart-desc" class="visually-hidden">A 3D globe. Jordan and the Czech Republic stand out of it, each shaded and raised by how many of my jobs, projects and certificates came from there: Jordan 8 (German Jordanian University in Madaba 4, Umniah HQ in Amman 3, Little Hands kindergarten in Amman 1) and the Czech Republic 1 (FIT at Brno University of Technology). The globe can be spun by dragging, or with the arrow keys. The underlying data follows as a table.</p>
+  <div id="chart" role="img" aria-label="3D choropleth globe: Jordan 8 items, Czech Republic 1" tabindex="0"></div>
+  <div class="key"><span>1 item</span><i></i><span>8 items</span><button type="button" id="zoom">Zoom in</button><em>Shade and height both show the count. Drag to spin the globe, or use the arrow keys.</em></div>
+  <details class="chart-data">
+    <summary>View the data as a table</summary>
+    <div class="chart-data-scroll">
+      <table>
+        <caption>Where I gained my experience, by country</caption>
+        <thead><tr><th scope="col">country</th><th scope="col">items</th></tr></thead>
+        <tbody><tr><th scope="row">Jordan</th><td>8</td></tr><tr><th scope="row">Czechia</th><td>1</td></tr></tbody>
+      </table>
+    </div>
+  </details>
+</figure>
+
+<script type="module">
+const host = document.getElementById('chart');
+const DATA = {
+  Jordan: { n: 8, label: 'Jordan', notes: 'GJU Madaba 4, Umniah Amman 3, Little Hands Amman 1' },
+  Czechia: { n: 1, label: 'Czech Republic', notes: 'FIT, Brno University of Technology: BISSIT 2026' },
+};
+const MAX = 8, LOW = '#9FD8BD', HIGH = '#16916A', SEA = '#CFE0E6', LAND = '#EDEBE4', BORDER = '#BDB8AA';
+const R = 40, BASE = 0.6, PER_ITEM = 0.9;        // globe radius; a country stands BASE + count * PER_ITEM tall
+const LON0 = 26, LAT0 = 40.5;                    // the globe starts facing the middle of Czechia and Jordan
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const rad = Math.PI / 180;
+
+try {
+  const [THREE, { feature }, topo] = await Promise.all([
+    import('https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js'),
+    import('https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/+esm'),
+    fetch('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json').then((r) => r.json()),
+  ]);
+  const countries = feature(topo, topo.objects.countries).features;
+  const lo = new THREE.Color(LOW), hi = new THREE.Color(HIGH);
+  const shade = (n) => lo.clone().lerp(hi, (n - 1) / (MAX - 1));
+  // lon/lat on the unit sphere: lon 0 faces +z, east is +x, north is +y
+  const unit = (lon, lat) => new THREE.Vector3(Math.cos(lat * rad) * Math.sin(lon * rad), Math.sin(lat * rad), Math.cos(lat * rad) * Math.cos(lon * rad));
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  host.append(renderer.domElement);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(32, 1, 1, 1000);
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xb9c6cc, 1.5));
+  const sun = new THREE.DirectionalLight(0xffffff, 2.4);
+  sun.position.set(-70, 60, 110);
+  scene.add(sun);
+
+  // ---- the ball: every country painted flat on an equirectangular texture ----
+  const TW = Math.min(renderer.capabilities.maxTextureSize, 4096), TH = TW / 2;
+  const cv = document.createElement('canvas');
+  cv.width = TW; cv.height = TH;
+  const g = cv.getContext('2d');
+  g.fillStyle = SEA; g.fillRect(0, 0, TW, TH);
+  const X = (lon) => (lon + 180) / 360 * TW, Y = (lat) => (90 - lat) / 180 * TH;
+  g.strokeStyle = 'rgba(110,140,155,.35)'; g.lineWidth = 1.2; g.beginPath();
+  for (let lon = -150; lon < 180; lon += 30) { g.moveTo(X(lon), 0); g.lineTo(X(lon), TH); }
+  for (let lat = -60; lat <= 60; lat += 30) { g.moveTo(0, Y(lat)); g.lineTo(TW, Y(lat)); }
+  g.stroke();
+  g.lineWidth = 1.6; g.strokeStyle = BORDER; g.lineJoin = 'round';
+  for (const f of countries) {
+    const info = DATA[f.properties.name];
+    const polys = f.geometry.type === 'Polygon' ? [f.geometry.coordinates] : f.geometry.coordinates;
+    g.fillStyle = info ? '#' + shade(info.n).getHexString() : LAND;
+    for (const rings of polys) {
+      g.beginPath();
+      for (const ring of rings) ring.forEach(([lon, lat], i) => (i && Math.abs(lon - ring[i - 1][0]) < 180 ? g.lineTo(X(lon), Y(lat)) : g.moveTo(X(lon), Y(lat))));
+      g.fill('evenodd');
+      g.stroke();
+    }
+  }
+  const tex = new THREE.CanvasTexture(cv);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  const globe = new THREE.Group();
+  const ball = new THREE.Mesh(new THREE.SphereGeometry(R, 96, 64), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.9 }));
+  ball.rotation.y = -Math.PI / 2;                 // three's texture seam sits on -x; this puts lon 0 on +z
+  globe.add(ball);
+  scene.add(globe);
+  scene.add(new THREE.Mesh(new THREE.SphereGeometry(R * 1.045, 48, 32), new THREE.MeshBasicMaterial({ color: 0xcfe4ee, transparent: true, opacity: 0.3, side: THREE.BackSide })));
+
+  // ---- the two countries rise out of it: triangulated on lon/lat, then pushed out along the radius ----
+  const risers = [], hot = [], pins = {};
+  function riser(geo, units, lvls, height) {
+    const r = {
+      set(k) {
+        const pos = geo.attributes.position.array, top = R + height * k, bottom = R - 0.4;
+        for (let i = 0; i < units.length; i++) {
+          const rr = lvls[i] ? top : bottom, u = units[i];
+          pos[i * 3] = u.x * rr; pos[i * 3 + 1] = u.y * rr; pos[i * 3 + 2] = u.z * rr;
+        }
+        geo.attributes.position.needsUpdate = true;
+      },
+    };
+    r.set(1);
+    risers.push(r);
+    return r;
+  }
+  for (const f of countries) {
+    const info = DATA[f.properties.name];
+    if (!info) continue;
+    const height = BASE + info.n * PER_ITEM, color = shade(info.n);
+    const polys = f.geometry.type === 'Polygon' ? [f.geometry.coordinates] : f.geometry.coordinates;
+    for (const rings of polys) {
+      const flat = rings.map((ring) => ring.slice(0, -1).map(([lon, lat]) => new THREE.Vector2(lon, lat)));
+      const u = flat.flat().map((v) => unit(v.x, v.y));
+      const units = [], lvls = [];
+      for (const t of THREE.ShapeUtils.triangulateShape(flat[0], flat.slice(1))) t.forEach((i) => { units.push(u[i]); lvls.push(1); });
+      const capVerts = units.length;
+      let off = 0;
+      for (const loop of flat) {
+        loop.forEach((_, i) => {
+          const a = off + i, b = off + ((i + 1) % loop.length);
+          units.push(u[a], u[b], u[b], u[a], u[b], u[a]);
+          lvls.push(0, 0, 1, 0, 1, 1);
+        });
+        off += loop.length;
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(units.length * 3), 3));
+      const col = new Float32Array(units.length * 3);
+      for (let i = 0; i < units.length; i++) { const c = i < capVerts ? color : color.clone().multiplyScalar(0.7); col.set([c.r, c.g, c.b], i * 3); }
+      geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+      riser(geo, units, lvls, height);
+      geo.computeVertexNormals();
+      geo.computeBoundingSphere();
+      const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.85, side: THREE.DoubleSide }));
+      mesh.userData = { key: f.properties.name };
+      // white rim along the top edge
+      const outer = u.slice(0, flat[0].length);
+      const lg = new THREE.BufferGeometry();
+      lg.setAttribute('position', new THREE.BufferAttribute(new Float32Array(outer.length * 3), 3));
+      riser(lg, outer, outer.map(() => 1), height);
+      const rim = new THREE.LineLoop(lg, new THREE.LineBasicMaterial({ color: 0xffffff }));
+      rim.frustumCulled = false;
+      globe.add(mesh, rim);
+      hot.push(mesh);
+      const area = flat[0].length;                // the biggest piece carries the label
+      if (!pins[f.properties.name] || area > pins[f.properties.name].area) {
+        const mid = outer.reduce((s, v) => s.add(v), new THREE.Vector3()).normalize();
+        const el = pins[f.properties.name] ? pins[f.properties.name].el : document.createElement('div');
+        if (!el.className) { el.className = 'pin'; el.innerHTML = `${info.label}<b>${info.n}</b>`; host.append(el); }
+        pins[f.properties.name] = { area, mid, height, el };
+      }
+    }
+  }
+
+  const tip = document.createElement('div');
+  tip.className = 'tip';
+  host.append(tip);
+
+  // ---- view ----
+  let w = 0, h = 0, interacted = false, dirty = true, vy = 0, vx = 0, settled = false, dFull = 150, zoom = 0, zcur = 0, byHand = false;
+  globe.rotation.set(LAT0 * rad, -LON0 * rad, 0);
+  function resize() {
+    w = host.clientWidth;
+    h = Math.round(clamp(w * 0.8, 280, 520));
+    host.style.height = h + 'px';
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    const half = Math.min(camera.fov * rad / 2, Math.atan(Math.tan(camera.fov * rad / 2) * camera.aspect));
+    dFull = (R * 1.04) / Math.sin(half);
+    camera.position.set(0, 0, dFull);
+    dirty = true;
+  }
+  new ResizeObserver(resize).observe(host);
+  resize();
+
+  // ---- rise when scrolled into view ----
+  let t0 = REDUCED ? 0 : null, visible = false;
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && t0 === null) t0 = performance.now(); }, { threshold: 0.3 }).observe(host);
+  const DUR = 1500;
+  const back = (k) => 1 + 2.4 * (k - 1) ** 3 + 1.4 * (k - 1) ** 2;       // ease-out with a small overshoot
+  const v3 = new THREE.Vector3();
+  const zbtn = document.getElementById('zoom');
+  const setZoom = (z) => { zoom = z; zbtn.textContent = z ? 'Zoom out' : 'Zoom in'; dirty = true; };
+  zbtn.addEventListener('click', () => { byHand = true; setZoom(zoom ? 0 : 1); });
+  if (!REDUCED) risers.forEach((r) => r.set(0.001));
+  function frame() {
+    requestAnimationFrame(frame);
+    const now = performance.now();                 // not rAF's timestamp: inside a frame it runs on another clock
+    if (!visible && !dirty && !vx && !vy) return;
+    dirty = false;
+    if (!interacted && !REDUCED) globe.rotation.y = -LON0 * rad + Math.sin(now / 2800) * 0.4 * (camera.position.z / dFull);   // a slow sway until you take hold
+    if (vx || vy) {                                // let go of a drag and it keeps turning, then settles
+      globe.rotation.y += vy; globe.rotation.x = clamp(globe.rotation.x + vx, -1.3, 1.3);
+      vx *= 0.94; vy *= 0.94;
+      if (Math.abs(vx) < 1e-4 && Math.abs(vy) < 1e-4) vx = vy = 0;
+    }
+    if (Math.abs(zoom - zcur) > 0.002) { zcur += (zoom - zcur) * 0.07; dirty = true; }          // dolly toward the two countries, or back out to the whole ball
+    camera.position.z = dFull * (1 - 0.37 * zcur * zcur * (3 - 2 * zcur));
+    let grow = 1;
+    if (!REDUCED && !settled) {
+      const k = t0 === null ? 0 : clamp((now - t0) / DUR, 0, 1);
+      grow = Math.max(0.001, back(k));
+      risers.forEach((r) => r.set(grow));
+      if (k === 1) { settled = true; setTimeout(() => { if (!byHand) setZoom(1); }, 700); }
+    }
+    renderer.render(scene, camera);
+    globe.updateMatrixWorld();
+    for (const p of Object.values(pins)) {
+      v3.copy(p.mid).multiplyScalar(R + p.height * grow + 1.2).applyMatrix4(globe.matrixWorld);
+      const front = v3.z * camera.position.z > R * R * 1.03;     // on the side facing us
+      v3.project(camera);
+      p.el.style.transform = `translate(${(v3.x * 0.5 + 0.5) * w}px, ${(-v3.y * 0.5 + 0.5) * h}px) translate(-50%, -100%)`;
+      p.el.style.opacity = front ? 1 : 0;
+    }
+  }
+  requestAnimationFrame(frame);
+
+  // ---- hover or tap a country for its places ----
+  const ray = new THREE.Raycaster(), ptr = new THREE.Vector2();
+  let lit = null;
+  function glow(key) {
+    if (key === lit) return;
+    lit = key;
+    for (const m of hot) { m.material.emissive.set(m.userData.key === key ? 0x1f6b50 : 0x000000); m.material.emissiveIntensity = 0.5; }
+    dirty = true;
+  }
+  function hover(e) {
+    const r = host.getBoundingClientRect();
+    ptr.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ptr, camera);
+    const hit = ray.intersectObjects(hot, false)[0];
+    const key = hit ? hit.object.userData.key : null;
+    glow(key);
+    tip.classList.toggle('on', !!key);
+    if (!key) return;
+    const d = DATA[key];
+    tip.innerHTML = `<b>${d.label}: ${d.n} ${d.n === 1 ? 'item' : 'items'}</b>${d.notes}`;
+    tip.style.transform = `translate(${clamp(e.clientX - r.left + 14, 0, r.width - 250)}px, ${clamp(e.clientY - r.top + 14, 0, r.height - 70)}px)`;
+  }
+  const off = () => { glow(null); tip.classList.remove('on'); };
+
+  // ---- drag to spin it; vertical swipes still scroll the page on touch ----
+  let drag = null;
+  host.addEventListener('pointerdown', (e) => { drag = { x: e.clientX, y: e.clientY, moved: 0 }; vx = vy = 0; host.setPointerCapture(e.pointerId); });
+  host.addEventListener('pointermove', (e) => {
+    if (!drag) { if (e.pointerType === 'mouse') hover(e); return; }
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    drag.x = e.clientX; drag.y = e.clientY; drag.moved += Math.abs(dx) + Math.abs(dy);
+    if (drag.moved < 5) return;
+    interacted = true; dirty = true; off();
+    vy = dx * 0.006; vx = dy * 0.006;
+    globe.rotation.y += vy; globe.rotation.x = clamp(globe.rotation.x + vx, -1.3, 1.3);
+  });
+  host.addEventListener('pointerup', (e) => { if (drag && drag.moved < 5) { vx = vy = 0; hover(e); } drag = null; });
+  host.addEventListener('pointercancel', () => { drag = null; });
+  host.addEventListener('pointerleave', off);
+  host.addEventListener('keydown', (e) => {
+    const k = { ArrowLeft: [0, -0.12], ArrowRight: [0, 0.12], ArrowUp: [-0.1, 0], ArrowDown: [0.1, 0] }[e.key];
+    if (!k) return;
+    e.preventDefault();
+    interacted = true; dirty = true;
+    globe.rotation.x = clamp(globe.rotation.x + k[0], -1.3, 1.3); globe.rotation.y += k[1];
+  });
+} catch (err) {
+  console.error(err);
+  host.className = 'fail';
+  host.removeAttribute('tabindex');
+  host.textContent = 'The 3D globe could not load here. Jordan has 8 items and the Czech Republic 1; the table below has the same numbers.';
+}
+</script>
+</body>
+</html>

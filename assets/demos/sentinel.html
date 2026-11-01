@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visual Sentinel: move the drone, tilt the cameras, read height and depth</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html { scrollbar-width: none; }
+body { margin: 0; background: transparent; color: #CFE9F2; font: 13px/1.5 ui-monospace, 'Cascadia Code', Consolas, Menlo, monospace; }
+button, input { font: inherit; color: inherit; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.stage { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+.card { background: #07131F; border: 1px solid #123247; border-left: 3px solid #00D9FF; padding: 12px 14px; }
+h3 { margin: 0 0 8px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #00D9FF; font-weight: 700; }
+
+#view { position: relative; width: 100%; height: 420px; background: radial-gradient(circle at 50% 30%, #0C2233, #050B14 75%); border: 1px solid #123247; cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; overflow: hidden; }
+#view:active { cursor: grabbing; }
+#view:focus-visible { outline: 2px solid #00D9FF; outline-offset: 2px; }
+#view canvas { display: block; width: 100%; height: 100%; }
+#view.fail { display: grid; place-items: center; height: auto; min-height: 140px; padding: 20px; text-align: center; color: #9FC3D1; cursor: default; }
+.hint { position: absolute; left: 8px; bottom: 6px; right: 8px; font-size: 11px; color: #6F97A8; pointer-events: none; }
+.tag { position: absolute; left: 0; top: 0; padding: 1px 7px; background: rgba(5, 11, 20, .82); border: 1px solid #123247; font-size: 11px; white-space: nowrap; pointer-events: none; color: #E6F7FF; }
+.tag.d { border-color: #00FF88; color: #00FF88; } .tag.e { border-color: #FF9F43; color: #FF9F43; } .tag.m { color: #9FC3D1; }
+
+.cams { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+.cams figure { margin: 0; }
+.cams canvas { display: block; width: 100%; aspect-ratio: 16 / 9; border: 1px solid #123247; background: #050B14; }
+.cams figcaption { margin-top: 3px; font-size: 11px; color: #6F97A8; }
+
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { padding: 3px 6px 3px 0; text-align: right; border-bottom: 1px solid #0E2434; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; color: #9FC3D1; font-weight: 400; }
+thead th { color: #6F97A8; font-size: 11px; font-weight: 400; }
+td.e { color: #FF9F43; } td.g { color: #00FF88; }
+.calc { margin: 8px 0 0; font-size: 12px; color: #9FC3D1; }
+.calc b { color: #E6F7FF; }
+.warn { margin: 8px 0 0; padding: 4px 8px; border: 1px solid #FF5C7A; color: #FF8CA0; font-size: 12px; }
+.imu { margin: 8px 0 0; font-size: 11.5px; color: #6F97A8; }
+.imu b { color: #CFE9F2; font-weight: 400; }
+
+.ctl { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; align-items: center; margin-bottom: 7px; }
+.ctl label { color: #9FC3D1; }
+.ctl output { color: #E6F7FF; min-width: 5.5ch; text-align: right; font-variant-numeric: tabular-nums; }
+.ctl input[type=range] { grid-column: 1 / -1; width: 100%; accent-color: #00D9FF; margin: 0; }
+.chk { display: flex; gap: 8px; align-items: flex-start; margin: 6px 0; color: #CFE9F2; cursor: pointer; }
+.chk input { accent-color: #00FF88; margin-top: 3px; }
+.chk small { display: block; color: #6F97A8; font-size: 11.5px; }
+.cards { display: grid; gap: 12px; }
+.note { margin: 12px 2px 0; color: #6F97A8; font-size: 12px; }
+
+@media (max-width: 800px) { .stage { grid-template-columns: 1fr; } #view { height: 340px; } }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div>
+    <div id="view" tabindex="0" role="application" aria-label="3D stereo rig. Drag the drone to move it, drag a camera to aim it, drag empty space to orbit. Arrow keys move the drone; the sliders do the same."></div>
+    <div class="cams">
+      <figure><canvas id="camL" role="img" aria-label="What PI 01's camera sees"></canvas><figcaption>PI 01 sees</figcaption></figure>
+      <figure><canvas id="camR" role="img" aria-label="What PI 02's camera sees"></canvas><figcaption>PI 02 sees</figcaption></figure>
+    </div>
+  </div>
+  <div class="cards">
+    <section class="card" aria-live="polite">
+      <h3>Where the drone is</h3>
+      <div id="out"></div>
+    </section>
+    <section class="card">
+      <h3>Controls</h3>
+      <div id="ctl"></div>
+      <label class="chk"><input type="checkbox" id="imu" checked><span>IMU roll correction<small>Off: the maths assumes both cameras sit level.</small></span></label>
+      <label class="chk"><input type="checkbox" id="aim"><span>Keep both cameras aimed at the drone<small>Dragging a camera switches this off.</small></span></label>
+    </section>
+  </div>
+</div>
+<p class="note">Same geometry as the Digital Twin's calculator: a 45 mm lens on a 54 mm sensor (fx 3200 px, 3840×2160), the drone projected through each camera's IMU orientation, then the two rays triangulated. The pixel noise slider adds the error a real detector makes.</p>
+
+<script type="module">
+const view = document.getElementById('view');
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const RAD = Math.PI / 180, DEG = 180 / Math.PI;
+const F = 3200, IW = 3840, IH = 2160, CX = IW / 2, CY = IH / 2;       // 45 mm / 54 mm sensor x 3840 px
+const HF = Math.atan(CX / F), VF = Math.atan(CY / F);                  // half field of view
+
+try {
+  const THREE = await import('https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js');
+
+  // ---- the rig and the drone, in rig coordinates: x right, y up, z forward (depth) ----
+  const S = { B: 2, camY: 1.5, x: 0.8, h: 5.5, d: 9, noise: 0.5, imu: true, aim: false,
+    cam: [{ yaw: 11, pitch: 17, roll: 6 }, { yaw: -1, pitch: 17, roll: -4 }] };
+  const v3 = (x, y, z) => new THREE.Vector3(x, y, z);
+  function basis(yaw, pitch, roll) {            // the twin's IMU convention: yaw about +y toward +x, pitch up, roll about forward
+    const y = yaw * RAD, p = pitch * RAD, r = roll * RAD;
+    const cy = Math.cos(y), sy = Math.sin(y), cp = Math.cos(p), sp = Math.sin(p);
+    const fwd = v3(sy * cp, sp, cy * cp);
+    let right = v3(cy, 0, -sy), up = v3(-sy * sp, cp, -cy * sp);
+    if (r) {
+      const cr = Math.cos(r), sr = Math.sin(r);
+      const r2 = right.clone().multiplyScalar(cr).addScaledVector(up, sr);
+      const u2 = up.clone().multiplyScalar(cr).addScaledVector(right, -sr);
+      right = r2; up = u2;
+    }
+    return { fwd, right, up };
+  }
+  function project(P, C, b) {                   // world point -> pixel, null when behind the lens
+    const d = P.clone().sub(C), z = d.dot(b.fwd);
+    if (z <= 0.01) return null;
+    return { u: F * d.dot(b.right) / z + CX, v: F * -d.dot(b.up) / z + CY };
+  }
+  function ray(u, v, b) {                       // pixel -> unit direction
+    return b.right.clone().multiplyScalar((u - CX) / F).addScaledVector(b.up, -(v - CY) / F).add(b.fwd).normalize();
+  }
+  function closest(C1, d1, C2, d2) {            // nearest points of two rays: the triangulated drone and how far apart the rays pass
+    const r = C1.clone().sub(C2), a = d1.dot(d1), b = d1.dot(d2), c = d2.dot(d2), d = d1.dot(r), e = d2.dot(r), den = a * c - b * b;
+    if (Math.abs(den) < 1e-9) return null;
+    const t = (b * e - c * d) / den, s = (a * e - b * d) / den;
+    const p1 = C1.clone().addScaledVector(d1, t), p2 = C2.clone().addScaledVector(d2, s);
+    return { mid: p1.clone().add(p2).multiplyScalar(0.5), gap: p1.distanceTo(p2) };
+  }
+  const gauss = () => { let u = 0; for (let i = 0; i < 6; i++) u += Math.random(); return (u - 3) * 1.414; };
+  let nz = [0, 0, 0, 0];
+
+  function solve() {
+    const C = [v3(-S.B / 2, S.camY, 0), v3(S.B / 2, S.camY, 0)], P = v3(S.x, S.h, S.d);
+    if (S.aim) S.cam.forEach((c, i) => { const dx = P.x - C[i].x, dz = P.z - C[i].z; c.yaw = Math.atan2(dx, dz) * DEG; c.pitch = Math.atan2(P.y - C[i].y, Math.hypot(dx, dz)) * DEG; });
+    const real = S.cam.map((c) => basis(c.yaw, c.pitch, c.roll));                // how the cameras really sit
+    const used = S.cam.map((c) => basis(c.yaw, c.pitch, S.imu ? c.roll : 0));    // what the maths believes
+    const px = real.map((b, i) => project(P, C[i], b));
+    const inside = (p) => p && p.u >= 0 && p.u <= IW && p.v >= 0 && p.v <= IH;
+    const out = { C, P, real, px, ok: [inside(px[0]), inside(px[1])], est: null };
+    if (out.ok[0] && out.ok[1]) {
+      const d = px.map((p, i) => ray(p.u + nz[i * 2], p.v + nz[i * 2 + 1], used[i]));
+      out.est = closest(C[0], d[0], C[1], d[1]);
+    }
+    return out;
+  }
+
+  // ---- scene: rig (x, y, z) shows up as (x, y, -z) so that forward is away from the viewer ----
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  view.append(renderer.domElement);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 400);
+  scene.add(new THREE.HemisphereLight(0xcfeaff, 0x0a1a28, 1.6));
+  const sun = new THREE.DirectionalLight(0xffffff, 1.6); sun.position.set(-8, 14, 6); scene.add(sun);
+  const sc = (p) => v3(p.x, p.y, -p.z);
+
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), new THREE.MeshBasicMaterial({ color: 0x07131f }));
+  ground.rotation.x = -Math.PI / 2; scene.add(ground);
+  const grid = new THREE.GridHelper(60, 60, 0x1a4a63, 0x0e2433); grid.position.y = 0.01; scene.add(grid);
+  for (const r of [5, 10, 15, 20]) {            // range rings every 5 m
+    const pts = Array.from({ length: 97 }, (_, i) => v3(Math.sin(i / 96 * Math.PI * 2) * r, 0.02, Math.cos(i / 96 * Math.PI * 2) * r));
+    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: 0x1d5b78, transparent: true, opacity: 0.6 })));
+  }
+
+  const mat = (c, o = {}) => new THREE.MeshStandardMaterial({ color: c, roughness: 0.6, metalness: 0.2, ...o });
+  const L = 5, fr = [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([a, b]) => v3(a * L * Math.tan(HF), b * L * Math.tan(VF), -L));
+  const pods = [0, 1].map((i) => {
+    const g = new THREE.Group(), pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.08, 1, 8), mat(0x3b5568));
+    const body = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.24, 0.2), mat(0x20384a));
+    const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.1, 0.22, 16), mat(0x00d9ff, { emissive: 0x003a4a }));
+    lens.rotation.x = Math.PI / 2; lens.position.z = -0.2;
+    const pts = [];
+    fr.forEach((c, k) => { pts.push(v3(0, 0, 0), c, c, fr[(k + 1) % 4]); });
+    const cone = new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: 0x00d9ff, transparent: true, opacity: 0.35 }));
+    const hit = new THREE.Mesh(new THREE.SphereGeometry(1.0, 8, 8), new THREE.MeshBasicMaterial({ visible: false }));
+    hit.userData.cam = i;
+    const model = new THREE.Group(); model.scale.setScalar(2.2); model.add(body, lens);
+    g.add(model, cone, hit);
+    scene.add(g, pole);
+    return { g, pole };
+  });
+  // the drone: body, four arms, four spinning rotors
+  const drone = new THREE.Group(), rotors = [];
+  drone.add(new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.14, 0.5), mat(0x2a4357, { emissive: 0x06202c })));
+  for (const a of [Math.PI / 4, -Math.PI / 4]) { const arm = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.05, 0.07), mat(0x20384a)); arm.rotation.y = a; drone.add(arm); }
+  for (const [x, z] of [[0.53, 0.53], [-0.53, 0.53], [0.53, -0.53], [-0.53, -0.53]]) {
+    const r = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.012, 20), new THREE.MeshBasicMaterial({ color: 0x00ff88, transparent: true, opacity: 0.45 }));
+    r.position.set(x, 0.1, z); drone.add(r); rotors.push(r);
+  }
+  const led = new THREE.Mesh(new THREE.SphereGeometry(0.07, 8, 8), new THREE.MeshBasicMaterial({ color: 0xff3b5c })); led.position.set(0, 0.02, -0.3); drone.add(led);
+  const droneHit = new THREE.Mesh(new THREE.SphereGeometry(0.8, 8, 8), new THREE.MeshBasicMaterial({ visible: false })); droneHit.userData.cam = 'drone';
+  drone.add(droneHit);
+  drone.scale.setScalar(2);
+  scene.add(drone);
+  const estMark = new THREE.Mesh(new THREE.SphereGeometry(0.2, 16, 12), new THREE.MeshBasicMaterial({ color: 0xff9f43, wireframe: true }));
+  scene.add(estMark);
+  const mkLines = (n, c, o = 1) => { const l = new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(new Float32Array(n * 6), 3)), new THREE.LineBasicMaterial({ color: c, transparent: true, opacity: o })); l.frustumCulled = false; scene.add(l); return l; };
+  const sight = mkLines(2, 0x00d9ff, 0.9), estSight = mkLines(2, 0xff9f43, 0.9), dims = mkLines(4, 0xe6f7ff, 0.7);
+  const setSegs = (l, segs) => { const a = l.geometry.attributes.position.array; segs.forEach(([p, q], i) => a.set([p.x, p.y, p.z, q.x, q.y, q.z], i * 6)); l.geometry.attributes.position.needsUpdate = true; };
+
+  const tags = {};
+  const tag = (k, text, cls = '') => { const el = document.createElement('div'); el.className = 'tag ' + cls; el.textContent = text; view.append(el); tags[k] = el; return el; };
+  tag('l', 'PI 01'); tag('r', 'PI 02'); tag('d', 'drone', 'd'); tag('e', 'estimate', 'e'); tag('hx', '', 'm'); tag('hz', '', 'm'); tag('hh', '', 'm'); tag('hb', '', 'm');
+  const hint = document.createElement('div'); hint.className = 'hint';
+  hint.textContent = 'Drag the drone (Shift: height) · drag a camera to aim it · drag empty space to orbit';
+  view.append(hint);
+
+  // ---- view orbit ----
+  let az = 0.55, pol = 1.15, dist = 19, w = 0, h = 0, dirty = true, visible = false;
+  const target = v3(0, 2.2, -5.5);
+  function resize() {
+    w = view.clientWidth; h = view.clientHeight;
+    renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix();
+    dist = w < 520 ? 25 : 19; dirty = true;
+  }
+  new ResizeObserver(resize).observe(view); resize();
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0.05 }).observe(view);
+
+  // ---- controls ----
+  const SL = [
+    ['x', 'Drone left / right', -8, 8, 0.05, (v) => (v >= 0 ? '+' : '') + v.toFixed(2) + ' m'],
+    ['h', 'Drone height above ground', 0.5, 12, 0.05, (v) => v.toFixed(2) + ' m'],
+    ['d', 'Drone depth (away from the rig)', 2, 22, 0.05, (v) => v.toFixed(2) + ' m'],
+    ['B', 'Baseline B between the Pis', 0.5, 4, 0.05, (v) => v.toFixed(2) + ' m'],
+    ['r0', 'PI 01 roll (IMU)', -20, 20, 0.5, (v) => v.toFixed(1) + '°'],
+    ['r1', 'PI 02 roll (IMU)', -20, 20, 0.5, (v) => v.toFixed(1) + '°'],
+    ['noise', 'Pixel noise of the detector', 0, 4, 0.1, (v) => v.toFixed(1) + ' px'],
+  ];
+  const get = (k) => (k === 'r0' ? S.cam[0].roll : k === 'r1' ? S.cam[1].roll : S[k]);
+  const put = (k, v) => { if (k === 'r0') S.cam[0].roll = v; else if (k === 'r1') S.cam[1].roll = v; else S[k] = v; };
+  const ctl = document.getElementById('ctl');
+  for (const [k, label, min, max, step, fmt] of SL) {
+    const row = document.createElement('div'); row.className = 'ctl';
+    row.innerHTML = `<label for="s-${k}">${label}</label><output id="o-${k}"></output><input type="range" id="s-${k}" min="${min}" max="${max}" step="${step}">`;
+    ctl.append(row);
+    row.querySelector('input').addEventListener('input', (e) => { put(k, +e.target.value); sync(); });
+  }
+  function sync() {
+    for (const [k, , , , , fmt] of SL) { document.getElementById('s-' + k).value = get(k); document.getElementById('o-' + k).textContent = fmt(get(k)); }
+    document.getElementById('aim').checked = S.aim; document.getElementById('imu').checked = S.imu;
+    dirty = true;
+  }
+  document.getElementById('imu').addEventListener('change', (e) => { S.imu = e.target.checked; dirty = true; });
+  document.getElementById('aim').addEventListener('change', (e) => { S.aim = e.target.checked; dirty = true; });
+  sync();
+
+  // ---- readouts ----
+  const sg = (v, d = 2) => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(d);
+  function paint(m) {
+    const out = document.getElementById('out');
+    const t = { x: S.x, h: S.h, z: S.d };
+    let html;
+    if (m.est) {
+      const e = { x: m.est.mid.x, h: m.est.mid.y, z: m.est.mid.z }, err = Math.hypot(e.x - t.x, e.h - t.h, e.z - t.z);
+      const row = (name, a, b) => `<tr><td>${name}</td><td>${a.toFixed(2)} m</td><td class="g">${b.toFixed(2)} m</td><td class="e">${sg(b - a)}</td></tr>`;
+      html = `<table><thead><tr><th></th><th>truth</th><th>measured</th><th>error</th></tr></thead><tbody>${row('Height', t.h, e.h)}${row('Depth Z', t.z, e.z)}${row('Left/right X', t.x, e.x)}<tr><td>Total error</td><td></td><td></td><td class="e">${err.toFixed(2)} m</td></tr></tbody></table>`;
+      const dpx = F * S.B / t.z;
+      html += `<p class="calc">Z = f·B / d = 3200 × ${S.B.toFixed(2)} / <b>${dpx.toFixed(0)} px</b> = <b>${t.z.toFixed(2)} m</b>. One pixel of disparity error moves the depth by <b>${(t.z * t.z / (F * S.B)).toFixed(3)} m</b> here, and the farther the drone, the worse it gets.</p>`;
+      if (!S.imu && (Math.abs(S.cam[0].roll) > 0.5 || Math.abs(S.cam[1].roll) > 0.5)) html += `<p class="calc">IMU correction is off while the cameras are rolled: that is where the error comes from. Turn it on.</p>`;
+    } else {
+      html = `<p class="warn">The drone is outside ${!m.ok[0] && !m.ok[1] ? 'both cameras' : !m.ok[0] ? "PI 01's frame" : "PI 02's frame"}, so there is no detection and no estimate. Aim the camera at it, or tick “Keep both cameras aimed”.</p>`;
+    }
+    html += `<p class="imu">IMU · PI 01 yaw <b>${sg(S.cam[0].yaw, 1)}°</b> pitch <b>${sg(S.cam[0].pitch, 1)}°</b> roll <b>${sg(S.cam[0].roll, 1)}°</b><br>IMU · PI 02 yaw <b>${sg(S.cam[1].yaw, 1)}°</b> pitch <b>${sg(S.cam[1].pitch, 1)}°</b> roll <b>${sg(S.cam[1].roll, 1)}°</b></p>`;
+    out.innerHTML = html;
+  }
+  function paintCam(id, i, m) {
+    const cv = document.getElementById(id), r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2);
+    if (cv.width !== Math.round(r.width * d)) { cv.width = Math.round(r.width * d); cv.height = Math.round(r.height * d); }
+    const g = cv.getContext('2d'), W = r.width, H = r.height, k = W / IW;
+    g.setTransform(d, 0, 0, d, 0, 0); g.clearRect(0, 0, W, H); g.fillStyle = '#071521'; g.fillRect(0, 0, W, H);
+    g.strokeStyle = '#123247'; g.lineWidth = 1; g.beginPath();
+    for (const f of [1 / 3, 2 / 3]) { g.moveTo(W * f, 0); g.lineTo(W * f, H); g.moveTo(0, H * f); g.lineTo(W, H * f); }
+    g.stroke();
+    // the horizon: sky above it, so a rolled camera shows a tilted line
+    const c = S.cam[i], b = m.real[i], C = m.C[i], ps = [-28, 28].map((a) => project(C.clone().add(v3(Math.sin((c.yaw + a) * RAD), 0, Math.cos((c.yaw + a) * RAD)).multiplyScalar(1000)), C, b));
+    if (ps[0] && ps[1]) {
+      g.strokeStyle = '#1D8FB0'; g.lineWidth = 1.5; g.beginPath();
+      const s = (ps[1].v - ps[0].v) / (ps[1].u - ps[0].u), v0 = ps[0].v + s * (0 - ps[0].u), v1 = ps[0].v + s * (IW - ps[0].u);
+      g.moveTo(0, v0 * k); g.lineTo(W, v1 * k); g.stroke();
+    }
+    g.strokeStyle = '#2C6C86'; g.beginPath(); g.moveTo(W / 2 - 8, H / 2); g.lineTo(W / 2 + 8, H / 2); g.moveTo(W / 2, H / 2 - 8); g.lineTo(W / 2, H / 2 + 8); g.stroke();
+    const p = m.px[i];
+    g.font = '10px ui-monospace, monospace';
+    if (m.ok[i]) {
+      const x = p.u * k, y = p.v * k, s = Math.max(10, 520 / m.P.clone().sub(C).length() * k * 6);
+      g.strokeStyle = '#00FF88'; g.lineWidth = 1.5; g.strokeRect(x - s / 2, y - s / 2, s, s);
+      g.fillStyle = '#00FF88'; g.fillRect(x - 1.5, y - 1.5, 3, 3);
+      g.fillText(`u ${p.u.toFixed(0)}  v ${p.v.toFixed(0)}`, 6, H - 6);
+    } else { g.fillStyle = '#FF8CA0'; g.fillText('drone out of frame', 6, H - 6); }
+  }
+
+  // ---- loop ----
+  const pr = v3(0, 0, 0), proj = (p, el, dx = 0, dy = 0) => { pr.copy(p).project(camera); el.style.transform = `translate(${(pr.x * 0.5 + 0.5) * w + dx}px, ${(-pr.y * 0.5 + 0.5) * h + dy}px) translate(-50%, -50%)`; el.style.opacity = pr.z < 1 ? 1 : 0; };
+  let lastNz = 0, lastPaint = 0;
+  function frame(now) {
+    requestAnimationFrame(frame);
+    if (!visible && !dirty) return;
+    if (now - lastNz > 250) { lastNz = now; nz = [gauss(), gauss(), gauss(), gauss()].map((n) => n * S.noise); dirty = true; }
+    const m = solve();
+    camera.position.set(target.x + dist * Math.sin(pol) * Math.sin(az), target.y + dist * Math.cos(pol), target.z + dist * Math.sin(pol) * Math.cos(az));
+    camera.lookAt(target);
+    pods.forEach((p, i) => {
+      const c = m.C[i], b = m.real[i], right = sc(b.right), up = sc(b.up), back = sc(b.fwd).negate();
+      p.g.position.copy(sc(c)); p.g.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(right, up, back));
+      p.pole.scale.y = c.y - 0.1; p.pole.position.set(c.x, (c.y - 0.1) / 2, 0);
+    });
+    const P = sc(m.P); drone.position.copy(P);
+    if (!REDUCED) { rotors.forEach((r, i) => { r.rotation.y += 0.7 * (i % 2 ? 1 : -1); }); drone.position.y += Math.sin(now / 500) * 0.05; }
+    setSegs(sight, [[sc(m.C[0]), P], [sc(m.C[1]), P]]);
+    if (m.est) { const E = sc(m.est.mid); estMark.visible = estSight.visible = true; estMark.position.copy(E); setSegs(estSight, [[sc(m.C[0]), E], [sc(m.C[1]), E]]); proj(E, tags.e, 26, -14); tags.e.style.display = ''; }
+    else { estMark.visible = estSight.visible = false; tags.e.style.display = 'none'; }
+    setSegs(dims, [[v3(0, 0.03, 0), v3(S.x, 0.03, 0)], [v3(S.x, 0.03, 0), v3(S.x, 0.03, -S.d)], [v3(S.x, 0, -S.d), v3(S.x, S.h, -S.d)], [sc(m.C[0]), sc(m.C[1])]]);
+    proj(sc(m.C[0]), tags.l, 0, -26); proj(sc(m.C[1]), tags.r, 0, -26); proj(P, tags.d, 0, -34);
+    tags.hx.textContent = `X ${sg(S.x)} m`; proj(v3(S.x / 2, 0.03, 0), tags.hx, 0, 14);
+    tags.hz.textContent = `Z ${S.d.toFixed(2)} m`; proj(v3(S.x, 0.03, -S.d / 2), tags.hz, 26, 8);
+    tags.hh.textContent = `H ${S.h.toFixed(2)} m`; proj(v3(S.x, S.h / 2, -S.d), tags.hh, 28, 0);
+    tags.hb.textContent = `B ${S.B.toFixed(2)} m`; proj(v3(0, S.camY, 0), tags.hb, 0, 18);
+    renderer.render(scene, camera);
+    if (now - lastPaint > 90) { lastPaint = now; paint(m); paintCam('camL', 0, m); paintCam('camR', 1, m); }
+    dirty = !REDUCED;
+  }
+  requestAnimationFrame(frame);
+
+  // ---- touch the drone, a camera, or the view ----
+  const rc = new THREE.Raycaster(), ptr = new THREE.Vector2(), plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), at = v3(0, 0, 0);
+  const aim = (e) => { const r = view.getBoundingClientRect(); ptr.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1); rc.setFromCamera(ptr, camera); };
+  const pick = (e) => { aim(e); const hit = rc.intersectObjects([droneHit, ...pods.map((p) => p.g.children.find((c) => c.userData.cam !== undefined))], false)[0]; return hit ? hit.object.userData.cam : null; };
+  let drag = null;
+  view.addEventListener('pointerdown', (e) => {
+    const what = e.pointerType === 'touch' ? null : pick(e);
+    drag = { what, x: e.clientX, y: e.clientY };
+    view.setPointerCapture(e.pointerId);
+  });
+  view.addEventListener('pointermove', (e) => {
+    if (!drag) { if (e.pointerType === 'mouse') view.style.cursor = pick(e) === null ? 'grab' : 'pointer'; return; }
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    drag.x = e.clientX; drag.y = e.clientY;
+    if (drag.what === null) { az -= dx * 0.007; pol = clamp(pol - dy * 0.006, 0.25, 1.45); }
+    else if (drag.what === 'drone') {
+      if (e.shiftKey) S.h = clamp(S.h - dy * 0.03, 0.5, 12);
+      else { aim(e); plane.constant = -S.h; if (rc.ray.intersectPlane(plane, at)) { S.x = clamp(at.x, -8, 8); S.d = clamp(-at.z, 2, 22); } }
+    } else { const c = S.cam[drag.what]; c.yaw = clamp(c.yaw + dx * 0.2, -50, 50); c.pitch = clamp(c.pitch - dy * 0.2, -10, 60); S.aim = false; }
+    sync();
+  });
+  const end = () => { drag = null; };
+  view.addEventListener('pointerup', end); view.addEventListener('pointercancel', end);
+  view.addEventListener('keydown', (e) => {
+    const k = { ArrowLeft: ['x', -0.25], ArrowRight: ['x', 0.25], ArrowUp: ['d', 0.5], ArrowDown: ['d', -0.5], PageUp: ['h', 0.25], PageDown: ['h', -0.25] }[e.key];
+    if (!k) return;
+    e.preventDefault();
+    const [key, step] = k, lim = SL.find((s) => s[0] === key);
+    S[key] = clamp(S[key] + step, lim[2], lim[3]); sync();
+  });
+} catch (err) {
+  console.error(err);
+  view.className = 'fail';
+  view.removeAttribute('tabindex');
+  view.textContent = 'The 3D rig could not load here (it needs WebGL and a connection to the three.js CDN).';
+}
+</script>
+</body>
+</html>

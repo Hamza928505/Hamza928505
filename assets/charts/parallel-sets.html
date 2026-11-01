@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My path: jobs, projects and certificates, 2022 to 2026</title>
+<!-- No charting library: a parallel-sets timeline drawn on a canvas. -->
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html { scrollbar-width: none; }
+body { margin: 0; background: transparent; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #0f172a; }
+
+.chart-card { margin: 0; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; }
+.chart-wrap { position: relative; width: 100%; }
+.chart-wrap canvas { display: block; width: 100%; touch-action: pan-y; }
+#tip { position: absolute; left: 0; top: 0; z-index: 2; max-width: 240px; padding: .34rem .5rem; border-radius: 6px; background: rgba(22,22,26,.94); color: #fff; white-space: pre-line; font: 12px/1.45 'IBM Plex Sans', system-ui, sans-serif; box-shadow: 0 4px 14px rgba(0,0,0,.3); pointer-events: none; opacity: 0; transition: opacity .1s; }
+
+.foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 14px; margin-top: 14px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.legend-item { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #475569; }
+.legend-swatch { width: 10px; height: 10px; border-radius: 3px; flex: 0 0 10px; }
+.replay { padding: 3px 10px; border: 1px solid #cbd5e1; border-radius: 999px; background: #fff; color: #334155; font: inherit; font-size: 12px; cursor: pointer; }
+.replay:hover, .replay:focus-visible { border-color: #15803d; color: #15803d; outline: 0; }
+
+.visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.chart-data { margin-top: 14px; font-size: 13px; }
+.chart-data > summary { cursor: pointer; color: #475569; padding: 4px 2px; border-radius: 4px; }
+.chart-data > summary:focus-visible { outline: 2px solid #15803d; outline-offset: 2px; }
+.chart-data-scroll { overflow-x: auto; margin-top: 8px; }
+.chart-data table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+.chart-data caption { text-align: left; padding-bottom: 6px; color: #5c6b80; font-size: 12px; }
+.chart-data th, .chart-data td { padding: 4px 10px 4px 0; text-align: left; border-bottom: 1px solid rgba(128,128,128,.22); white-space: nowrap; }
+
+@media (max-width: 480px) { .chart-card { padding: 12px; } }
+</style>
+</head>
+<body>
+
+<figure class="chart-card" aria-describedby="chart-desc">
+  <p id="chart-desc" class="visually-hidden">A parallel-sets timeline with one column per year, 2022 to 2026. In 2022 I entered the German Jordanian University. Every job, project and certificate starts a ribbon in the column of the year I got it and keeps flowing to the right, so the stack grows each year: 1 in 2023, 2 in 2024, 6 in 2025 and 23 in 2026, in all 3 Umniah internships, 1 job, 10 projects and 18 certificates. The same data follows as a table.</p>
+  <div class="chart-wrap">
+    <canvas id="chart" role="img" aria-label="Timeline from 2022 to 2026: each job, project and certificate starts a ribbon in the year I got it and flows on to the right"></canvas>
+    <div id="tip" role="tooltip"></div>
+  </div>
+  <div class="foot">
+    <div class="legend" id="legend"></div>
+    <button type="button" class="replay" id="replay">↻ Replay</button>
+  </div>
+  <details class="chart-data">
+    <summary>View the data as a table</summary>
+    <div class="chart-data-scroll">
+      <table>
+        <caption>My path, year by year</caption>
+        <thead><tr><th scope="col">Year</th><th scope="col">Type</th><th scope="col">What</th><th scope="col">Count</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </details>
+</figure>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const TYPES = {
+  study:   { label: 'University',  color: '#7A5AC8' },
+  intern:  { label: 'Internship',  color: '#E5484D' },
+  job:     { label: 'Job',         color: '#2F76C9' },
+  project: { label: 'Project',     color: '#16916A' },
+  cert:    { label: 'Certificate', color: '#E8833A' },
+};
+const YEARS = [2022, 2023, 2024, 2025, 2026];
+// [year, type, name, count]: a ribbon starts in its year's column and flows to the right edge.
+const ITEMS = [
+  [2022, 'study',   'Entered GJU · B.Sc. Computer Science', 1],
+  [2023, 'intern',  'Umniah front end', 1],
+  [2024, 'intern',  'Umniah back end', 1],
+  [2024, 'cert',    'NCSC Cyber Warriors', 1],
+  [2025, 'intern',  'Umniah full stack', 1],
+  [2025, 'job',     'DAIS Lab research', 1],
+  [2025, 'project', 'Visual Sentinel', 1],
+  [2025, 'cert',    'Red Hat RH124', 1],
+  [2025, 'cert',    'freeCodeCamp C#', 1],
+  [2025, 'cert',    'German B1', 1],
+  [2026, 'project', 'Little Hands', 1],
+  [2026, 'project', 'OpenCharts', 1],
+  [2026, 'project', 'ExpenseTracker', 1],
+  [2026, 'project', 'GJU Year Kit', 1],
+  [2026, 'project', 'CareerToAI', 1],
+  [2026, 'project', 'EduCard AI', 1],
+  [2026, 'project', 'JobSearchEngine', 1],
+  [2026, 'project', 'RSA', 1],
+  [2026, 'project', 'Favicon & PWA icons', 1],
+  [2026, 'cert',    'Red Hat RH134', 1],
+  [2026, 'cert',    'Anthropic Academy · 7', 7],
+  [2026, 'cert',    'BISSIT, Brno', 1],
+  [2026, 'cert',    'MoDEE fundamentals · 4', 4],
+  [2026, 'cert',    'English B1', 1],
+];
+
+const canvas = $('chart'), ctx = canvas.getContext('2d'), tip = $('tip');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (p) => (p < 0.5 ? 2 * p * p : 1 - 2 * (1 - p) * (1 - p));
+let prog = 0, regions = [], raf = 0, W = 0, H = 0;
+
+// Geometry for one width. t is the moment (in columns) a ribbon starts, so same-year ribbons start top to bottom.
+function geometry() {
+  const small = W < 500;
+  const bw = small ? 9 : 13, padT = 46, padB = 12, gap = 2.5;
+  const x0 = small ? 10 : 14, xEnd = W - (small ? 8 : 14);
+  const xLast = xEnd - clamp(W * 0.36, 96, 170);
+  const step = (xLast - x0) / (YEARS.length - 1);
+  const units = ITEMS.reduce((s, it) => s + it[3], 0);
+  const u = (H - padT - padB - gap * (ITEMS.length - 1)) / units;
+  let y = padT;
+  const seen = {};
+  const pos = ITEMS.map(([yr, , , n]) => {
+    const k = YEARS.indexOf(yr), same = ITEMS.filter((it) => it[0] === yr).length;
+    const j = seen[yr] = (seen[yr] ?? -1) + 1;
+    const p = { k, x: x0 + k * step, y, h: n * u, t: k + 0.7 * j / same };
+    y += n * u + gap;
+    return p;
+  });
+  return { small, bw, padT, padB, x0, xEnd, step, pos, span: YEARS.length - 1 + 0.75 + (xEnd - xLast) / step };
+}
+
+function draw() {
+  const g = geometry(), f = ease(prog) * g.span;
+  ctx.clearRect(0, 0, W, H);
+  regions = [];
+  const fs = g.small ? 10 : 11;
+
+  // Year columns: a guide line, the year and what it added.
+  YEARS.forEach((yr, k) => {
+    const x = g.x0 + k * g.step + g.bw / 2;
+    ctx.setLineDash([3, 4]); ctx.strokeStyle = 'rgba(100,116,139,.28)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x, g.padT - 10); ctx.lineTo(x, H - g.padB); ctx.stroke(); ctx.setLineDash([]);
+    const added = ITEMS.filter((it) => it[0] === yr && it[1] !== 'study').reduce((s, it) => s + it[3], 0);
+    ctx.globalAlpha = clamp((f - k + 0.3) * 3, 0, 1);
+    ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = '#0f172a'; ctx.font = `700 ${g.small ? 12 : 14}px 'IBM Plex Sans', system-ui, sans-serif`;
+    ctx.fillText(String(yr), x, g.padT - 28);
+    ctx.fillStyle = '#64748b'; ctx.font = `500 ${g.small ? 9 : 11}px 'IBM Plex Sans', system-ui, sans-serif`;
+    ctx.fillText(added ? '+' + added : 'start', x, g.padT - 14);
+    ctx.globalAlpha = 1;
+  });
+
+  // Ribbons: each starts at its year's bar and grows right at one column per unit of f.
+  ctx.font = `500 ${fs}px 'IBM Plex Sans', system-ui, sans-serif`;
+  ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  ITEMS.forEach(([yr, type, name, n], i) => {
+    const p = g.pos[i], a = clamp((f - p.t) * 5, 0, 1);
+    if (a <= 0) return;
+    const col = TYPES[type].color, xs = p.x + g.bw, xe = Math.min(g.xEnd, xs + (f - p.t) * g.step);
+    const grad = ctx.createLinearGradient(xs, 0, g.xEnd, 0);
+    grad.addColorStop(0, col + '8c'); grad.addColorStop(1, col + '24');
+    ctx.fillStyle = grad; ctx.fillRect(xs, p.y, xe - xs, p.h);
+    ctx.globalAlpha = a; ctx.fillStyle = col; ctx.fillRect(p.x, p.y, g.bw, p.h); ctx.globalAlpha = 1;
+
+    let label = name; const room = g.xEnd - xs - 12;
+    while (label.length > 1 && ctx.measureText(label).width > room) label = label.slice(0, -1).trimEnd();
+    if (label !== name) label += '…';
+    ctx.save(); ctx.beginPath(); ctx.rect(xs, p.y, xe - xs, p.h); ctx.clip();
+    ctx.fillStyle = '#0f172a'; ctx.fillText(label, xs + 6, p.y + p.h / 2 + 0.5);
+    ctx.restore();
+
+    regions.push({ x: p.x, y: p.y, w: g.xEnd - p.x, h: p.h, text: `${name}\n${TYPES[type].label}${n > 1 ? ' (' + n + ')' : ''} · ${yr}` });
+  });
+}
+
+function size() {
+  W = $('chart').parentElement.clientWidth;
+  H = W < 500 ? 520 : 600;
+  const dpr = devicePixelRatio || 1;
+  canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+  canvas.style.height = H + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  draw();
+}
+
+function play() {
+  cancelAnimationFrame(raf);
+  tip.style.opacity = 0; // the ribbon it described may not be drawn yet
+  const t0 = performance.now(); // not the rAF timestamp: it runs on another clock inside iframes
+  const step = () => {
+    prog = reduce ? 1 : Math.min(1, (performance.now() - t0) / 5200);
+    draw();
+    if (prog < 1) raf = requestAnimationFrame(step);
+  };
+  step();
+}
+
+// Hover/tap: show the nearest ribbon's name, type and year.
+function hover(e) {
+  const b = canvas.getBoundingClientRect(), x = e.clientX - b.left, y = e.clientY - b.top;
+  const hit = regions.find((r) => x >= r.x && x <= r.x + r.w && y >= r.y - 1 && y <= r.y + r.h + 1);
+  if (!hit) { tip.style.opacity = 0; return; }
+  tip.textContent = hit.text; tip.style.opacity = 1;
+  const left = clamp(x - tip.offsetWidth / 2, 4, W - tip.offsetWidth - 4);
+  const top = y - tip.offsetHeight - 12 < 4 ? y + 18 : y - tip.offsetHeight - 12;
+  tip.style.transform = `translate(${Math.round(left)}px,${Math.round(top)}px)`;
+}
+canvas.addEventListener('pointermove', hover);
+canvas.addEventListener('pointerdown', hover);
+canvas.addEventListener('pointerleave', () => { tip.style.opacity = 0; });
+
+$('replay').addEventListener('click', play);
+addEventListener('resize', size);
+size();
+
+// Draw the chart the first time it is on screen.
+new IntersectionObserver(([e], io) => { if (e.isIntersecting) { io.disconnect(); play(); } }, { threshold: 0.25 }).observe(document.body);
+
+// Legend and the data table.
+const count = (type) => ITEMS.filter((it) => it[1] === type).reduce((s, it) => s + it[3], 0);
+$('legend').innerHTML = [['study', 'University'], ['intern', 'Internships'], ['job', 'Jobs'], ['project', 'Projects'], ['cert', 'Certificates']]
+  .map(([t, l]) => `<span class="legend-item"><span class="legend-swatch" style="background:${TYPES[t].color}"></span>${l} · ${count(t)}</span>`).join('');
+const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+$('rows').innerHTML = ITEMS.map(([yr, type, name, n]) => `<tr><th scope="row">${yr}</th><td>${TYPES[type].label}</td><td>${esc(name)}</td><td>${n}</td></tr>`).join('');
+</script>
+</body>
+</html>

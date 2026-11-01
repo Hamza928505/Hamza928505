@@ -7,39 +7,83 @@
 <meta name="description" content="Full-stack .NET developer with three years of production work at Umniah, working on edge AI and computer vision. Final-year Computer Science at the German Jordanian University.">
 <meta name="theme-color" content="#F4F1EA">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23141414'/%3E%3Crect x='6' y='6' width='6' height='20' rx='2' fill='%2300D9FF'/%3E%3Crect x='13' y='6' width='6' height='20' rx='2' fill='%23F7B32B'/%3E%3Crect x='20' y='6' width='6' height='20' rx='2' fill='%23FF3B3B'/%3E%3C/svg%3E">
+<script>document.documentElement.className = 'js';</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css" integrity="sha384-qrALq7+6jBOZIQsNnT6xGkMDru64qD6uTlDra39xrt2SoXl4pO3FX6Roz/RpR/BS" crossorigin="anonymous">
 <link rel="stylesheet" href="style.css">
+<script src="lanyard.js" defer></script>
 </head>
 <body>
 
 <header class="s-hero" id="top">
-  <div class="wrap hero-grid">
-    <div>
+  <div class="ly">
+    <div class="ly-head">
       <p class="eyebrow">Portfolio · Amman, Jordan</p>
       <h1>Hamza Salameh</h1>
       <p class="role">Full-stack .NET developer · Edge AI &amp; computer vision · Final-year Computer Science at the German Jordanian University</p>
-      <p>In the summer of 2025 I built a back-office system for Umniah's call-centre team, covering the front end, back end, database and testing, on my own. It's still running today.</p>
-      <blockquote>“Code is judged by whether it still works when you are no longer there to maintain it.”</blockquote>
-      <p class="hero-links">
-        <a href="https://github.com/Hamza928505">GitHub</a>
-        <a href="https://www.linkedin.com/in/hamza-salameh-287a53258/">LinkedIn</a>
-        <a href="mailto:H.Salameh03@gju.edu.jo">H.Salameh03@gju.edu.jo</a>
-      </p>
     </div>
+    <!-- lanyard.js hangs each item on a rail as an ID badge: name, role and place on the front; the rest on the back -->
+    <ol class="lanyards" aria-label="Where I have studied and worked">
+      <li style="--tone:#1D2B4A" data-icon="fa-graduation-cap">
+        <b>GJU</b> <span>B.Sc. Computer Science</span> <em>Madaba · 2022 – 27</em>
+        <p>Final-year Computer Science. My graduation project is Visual Sentinel.</p>
+        <ul><li>German B1</li><li>English B1</li><li>Hackathons</li></ul>
+        <a href="#visual-sentinel">Sentinel</a> <a href="#gjuyearkit">Year Kit</a> <a href="#education">Education</a>
+      </li>
+      <li style="--tone:#CE0037" data-icon="fa-tower-cell">
+        <b>Umniah</b> <span>Dual Studies intern</span> <em>Amman · 2023 – 25</em>
+        <p>Front end in 2023, back end in 2024, and in 2025 a full-stack system still in production.</p>
+        <ul><li>Front end</li><li>Back end</li><li>Full stack</li></ul>
+        <a href="#umniah">Umniah</a>
+      </li>
+      <li style="--tone:#0891B2" data-icon="fa-user-shield">
+        <b>NCSC Jordan</b> <span>Cyber Warriors trainee</span> <em>Jordan · Sep 2024</em>
+        <p>40 hours of Linux, web security, OSINT, cryptography and capture-the-flag.</p>
+        <ul><li>CTF</li><li>OSINT</li><li>40 hours</li></ul>
+        <a href="#competitions">Contests</a> <a href="#certifications">Certificate</a>
+      </li>
+      <li style="--tone:#FFB000" data-icon="fa-flask">
+        <b>DAIS Lab</b> <span>Research Assistant</span> <em>GJU · 2025 – 26</em>
+        <p>AL-Gen+ makes labelled attack traffic to train intrusion detection. Two papers build on it.</p>
+        <ul><li>Python</li><li>IDS</li><li>2 papers</li></ul>
+        <a href="#algen">AL-Gen+</a>
+      </li>
+      <li style="--tone:#6C63D8" data-icon="fa-laptop-code">
+        <b>Projects</b> <span>Full-stack developer</span> <em>Solo · 2026</em>
+        <p>Little Hands, OpenCharts, ExpenseTracker, CareerToAI and more, each built end to end.</p>
+        <ul><li>.NET</li><li>JavaScript</li><li>Python</li></ul>
+        <a href="#little-hands">Little Hands</a> <a href="#opencharts">OpenCharts</a> <a href="#careertoai">CareerToAI</a>
+      </li>
+      <li style="--tone:#0062AD" data-icon="fa-earth-europe">
+        <b>BISSIT 2026</b> <span>Summer school</span> <em>Brno · Aug 2026</em>
+        <p>Cyber Security &amp; Machine Learning at Brno University of Technology, Czechia.</p>
+        <ul><li>Forensics</li><li>Deepfake audio</li></ul>
+        <a href="#certifications">Certificate</a> <a href="#education">Education</a>
+      </li>
+    </ol>
+    <p class="hero-links">
+      <a href="https://github.com/Hamza928505"><i class="fa-brands fa-github" aria-hidden="true"></i>GitHub</a>
+      <a href="https://www.linkedin.com/in/hamza-salameh-287a53258/"><i class="fa-brands fa-linkedin" aria-hidden="true"></i>LinkedIn</a>
+      <a href="mailto:H.Salameh03@gju.edu.jo"><i class="fa-solid fa-envelope" aria-hidden="true"></i>H.Salameh03@gju.edu.jo</a>
+    </p>
+  </div>
+  <div class="wrap hero-more">
+    <p>In the summer of 2025 I built a back-office system for Umniah's call-centre team, covering the front end, back end, database and testing, on my own. It's still running today.</p>
+    <blockquote>“Code is judged by whether it still works when you are no longer there to maintain it.”</blockquote>
     <nav aria-label="Sections">
-      <p class="eyebrow">Every project gets its own palette</p>
+      <p class="eyebrow">Index</p>
       <ol class="index">
-        <li><a href="#umniah"><i style="--a:#1B1033;--b:#C6F432"></i>Umniah<span>signal</span></a></li>
-        <li><a href="#visual-sentinel"><i style="--a:#050B14;--b:#00D9FF"></i>Visual Sentinel<span>radar</span></a></li>
-        <li><a href="#little-hands"><i style="--a:#F25C54;--b:#F7B32B"></i>Little Hands<span>crayon</span></a></li>
-        <li><a href="#opencharts"><i style="--a:#6C63D8;--b:#16916A"></i>OpenCharts<span>gallery</span></a></li>
-        <li><a href="#expensetracker"><i style="--a:#163300;--b:#9FE870"></i>ExpenseTracker<span>wallet</span></a></li>
-        <li><a href="#algen"><i style="--a:#0B0B0B;--b:#FF3B3B"></i>AL-Gen+<span>terminal</span></a></li>
-        <li><a href="#gjuyearkit"><i style="--a:#1F6BAD;--b:#B86E00"></i>GJU German Year Kit<span>editorial</span></a></li>
-        <li><a href="#careertoai"><i style="--a:#FBFAF5;--b:#222222"></i>CareerToAI<span>plain text</span></a></li>
-        <li><a href="#also"><i style="--a:#4F46E5;--b:#F3EFE6"></i>Also built<span>mixed</span></a></li>
-        <li><a href="#competitions"><i style="--a:#160B2E;--b:#FFE066"></i>Competitions<span>arcade</span></a></li>
-        <li><a href="#certifications"><i style="--a:#EE0000;--b:#D97757"></i>Certifications<span>wall</span></a></li>
-        <li><a href="#education"><i style="--a:#1D2B4A;--b:#F3ECDD"></i>Education &amp; languages<span>passport</span></a></li>
+        <li><a href="#umniah"><i class="fa-solid fa-tower-cell" aria-hidden="true" style="--c:#CE0037"></i>Umniah</a></li>
+        <li><a href="#visual-sentinel"><i class="fa-solid fa-crosshairs" aria-hidden="true" style="--c:#00D9FF"></i>Visual Sentinel</a></li>
+        <li><a href="#little-hands"><i class="fa-solid fa-bus" aria-hidden="true" style="--c:#F7B32B"></i>Little Hands</a></li>
+        <li><a href="#opencharts"><i class="fa-solid fa-chart-column" aria-hidden="true" style="--c:#6C63D8"></i>OpenCharts</a></li>
+        <li><a href="#expensetracker"><i class="fa-solid fa-wallet" aria-hidden="true" style="--c:#9FE870"></i>ExpenseTracker</a></li>
+        <li><a href="#algen"><i class="fa-solid fa-shield-halved" aria-hidden="true" style="--c:#FF3B3B"></i>AL-Gen+</a></li>
+        <li><a href="#gjuyearkit"><i class="fa-solid fa-suitcase-rolling" aria-hidden="true" style="--c:#1F6BAD"></i>GJU German Year Kit</a></li>
+        <li><a href="#careertoai"><i class="fa-solid fa-robot" aria-hidden="true" style="--c:#222222"></i>CareerToAI</a></li>
+        <li><a href="#also"><i class="fa-solid fa-toolbox" aria-hidden="true" style="--c:#4F46E5"></i>Also built</a></li>
+        <li><a href="#competitions"><i class="fa-solid fa-trophy" aria-hidden="true" style="--c:#FFC400"></i>Competitions</a></li>
+        <li><a href="#certifications"><i class="fa-solid fa-certificate" aria-hidden="true" style="--c:#EE0000"></i>Certifications</a></li>
+        <li><a href="#education"><i class="fa-solid fa-graduation-cap" aria-hidden="true" style="--c:#1D2B4A"></i>Education &amp; languages</a></li>
       </ol>
     </nav>
   </div>
@@ -49,9 +93,14 @@
 
 <section class="s-umniah" id="umniah" aria-labelledby="h-umniah">
   <div class="wrap">
-    <img class="art" src="assets/umniah.svg" width="960" height="320" alt="Signal bars filling one, two, then three bars across 2023, 2024 and 2025.">
+    <img class="art" src="assets/umniah.svg" width="960" height="332" alt="A 5G mast sending out signal waves while a light pulse runs along a fibre line through 2023, 2024 and 2025, with signal bars filling one, two, then three.">
     <h2 id="h-umniah" class="sr">Umniah · Digital &amp; IT</h2>
-    <p class="lead">Umniah is Jordan's second-largest telecom operator. Through its Dual Studies programme I spent July to October of each year in the Digital &amp; IT department, and each summer built on the one before.</p>
+    <p class="lead">Umniah, now Umniah by Beyon, is one of Jordan's three mobile operators. Through its Dual Studies programme I spent July to October of each year in its Digital &amp; IT department, and each summer built on the one before.</p>
+    <ul class="net" aria-label="What Umniah runs">
+      <li><span class="fa-solid fa-signal" aria-hidden="true"></span>5G mobile</li>
+      <li><span class="fa-solid fa-house-signal" aria-hidden="true"></span>Home Fiber internet</li>
+      <li><span class="fa-solid fa-cart-shopping" aria-hidden="true"></span><a href="https://eshop.umniah.com/en/">eShop for devices and plans</a></li>
+    </ul>
     <div class="years">
       <article>
         <h3><span>2023</span> Front-end developer</h3>
@@ -86,9 +135,15 @@
 
 <section class="s-vs" id="visual-sentinel" aria-labelledby="h-vs">
   <div class="wrap">
-    <img class="art" src="assets/visual-sentinel.svg" width="960" height="320" alt="A radar sweep locking onto a drone, with the figures 107 field experiments, 2 depth estimators and 0 cloud dependencies.">
+    <img class="art" src="assets/visual-sentinel.svg" width="960" height="420" alt="A 3D scene: two Raspberry Pi nodes on tripods, PI 01 and PI 02, each with a camera, IMU axes and a GPS antenna linked to a satellite. Their sight lines meet on a locked drone, with the baseline B and depth Z = f·B/d marked on the ground. 107 field experiments, 2 depth estimators, 0 cloud dependencies.">
     <h2 id="h-vs" class="sr">Visual Sentinel</h2>
     <p class="lead">My graduation project: one system spanning hardware, embedded C, stereo geometry and deep learning, proven in the field rather than on a benchmark.</p>
+    <ul class="rig" aria-label="The rig">
+      <li><span class="fa-brands fa-raspberry-pi" aria-hidden="true"></span><b>2 monitoring nodes</b>PI 01 and PI 02, each a Raspberry Pi 4</li>
+      <li><span class="fa-solid fa-camera" aria-hidden="true"></span><b>Camera</b>A Canon EOS R10 on each node</li>
+      <li><span class="fa-solid fa-compass" aria-hidden="true"></span><b>IMU</b>Yaw, pitch and roll per node</li>
+      <li><span class="fa-solid fa-satellite" aria-hidden="true"></span><b>GPS</b>A fix per node, saved with every recording</li>
+    </ul>
     <ol class="pipeline">
       <li><b>01 Capture</b>Dual Raspberry Pi 4 nodes with Canon EOS R10 cameras, MPU-6050 IMUs and GPS, triggered in sync by an orchestrator written in C.</li>
       <li><b>02 Detect</b>YOLOv8s fine-tuned with heavy augmentation on combined drone datasets.</li>
@@ -101,6 +156,9 @@
       <div><dt>Camera rigs are never quite level</dt><dd>IMU fusion applies a roll-correction rotation before any geometry is computed.</dd></div>
       <div><dt>Drones are tiny and noisy in frame</dt><dd>Homography-based multi-frame fusion cancels the noise and rebuilds the drone's sides.</dd></div>
     </dl>
+    <h3 class="demo-h">Try it: move the drone, tilt the cameras</h3>
+    <p class="demo-p">The two Pis, the drone and the maths between them, running live. Drag the drone and the page reads its height and depth the way the rig does: each camera's IMU gives its yaw, pitch and roll, the drone is projected through the lens, and the two rays are triangulated. Roll the cameras, then switch the IMU correction off to see why it exists.</p>
+    <div class="demo"><iframe src="assets/demos/sentinel.html" title="Interactive stereo rig: drag the drone or a camera and read its height, depth and left-right position" loading="lazy"></iframe></div>
     <p>Evaluated across <strong>107 structured field experiments</strong>, with train/val/test splits stratified by camera baseline.</p>
     <p class="links"><a href="https://hamza928505.github.io/VisualSentinel/">Live dashboard</a><a href="https://hamza928505.github.io/VisualSentinel/Dashboard.html">Experiment archive</a><a href="https://hamza928505.github.io/VisualSentinel/DigitalTwin.html">3D workstation</a></p>
   </div>
@@ -134,9 +192,42 @@
     <img class="art" src="assets/opencharts.svg" width="960" height="320" alt="A bar chart, donut, line chart and flow diagram tiled on graph paper.">
     <h2 id="h-oc" class="sr">OpenCharts</h2>
     <p class="lead">A library of 115 chart types. Each one opens in a studio where the data, colours and options are live controls and the HTML, CSS and JavaScript update as you edit, so the code you copy is the chart you built.</p>
+    <p class="note">Below are three charts fed my own record from this page. The first two come straight from the library's code export; the globe is its choropleth rebuilt in 3D. The parallel sets draw themselves; the radar loads Chart.js and the globe loads Three.js and a world map.</p>
+    <div class="live">
+      <figure>
+        <figcaption>
+          <p class="tag">Parallel sets</p>
+          <h3>My path, 2022 to 2026</h3>
+          <p>One column per year. It starts in 2022, when I entered GJU, and then every job, project and certificate starts a ribbon in the year I got it and keeps flowing right, so the stack grows. Umniah internships are red, other jobs blue, projects green, certificates orange: 32 in all.</p>
+          <p>Umniah comes back each year, as front end in 2023, back end in 2024 and full stack in 2025. 2026 is my busiest year so far, with 9 projects and 14 certificates, 7 of them from Anthropic Academy.</p>
+        </figcaption>
+        <iframe src="assets/charts/parallel-sets.html" title="Parallel sets timeline: a column for each year from 2022 to 2026, with a ribbon starting for every job, project and certificate in the year I got it" loading="lazy"></iframe>
+      </figure>
+      <figure>
+        <figcaption>
+          <p class="tag">Radar</p>
+          <h3>My skills</h3>
+          <p>Ten skills on a spider's web, counted two ways. The red shape is how many of my 14 jobs and projects used each one. The blue shape is how many of my certificates cover it. A web-slinger swings by behind it.</p>
+          <p>HTML, CSS and JavaScript run through most of what I build, with C#, .NET and SQL behind them. My certificates add LLMs and agents, Linux and security.</p>
+        </figcaption>
+        <iframe src="assets/charts/radar.html" title="Radar: ten of my skills, jobs and projects against certificates" loading="lazy"></iframe>
+      </figure>
+      <figure>
+        <figcaption>
+          <p class="tag">3D choropleth globe</p>
+          <h3>Where it happened</h3>
+          <p>Each country is shaded and raised by how many of my jobs, projects and certificates came from it: the darker and taller, the more. Drag the globe to spin it, or zoom in on the two countries. The other 23 aren't tied to a place, so they aren't on the map.</p>
+          <ul class="places">
+            <li><b>8</b>Jordan: German Jordanian University in Madaba (4), Umniah HQ in Amman (3), Little Hands kindergarten in Amman (1)</li>
+            <li><b>1</b>Czech Republic: FIT at Brno University of Technology, the BISSIT summer school</li>
+          </ul>
+        </figcaption>
+        <iframe src="assets/charts/choropleth.html" title="3D choropleth globe: Jordan 8 items, Czech Republic 1" loading="lazy"></iframe>
+      </figure>
+    </div>
     <div class="tiles">
       <article><h3>Match my data</h3><p>Paste a table or drop a spreadsheet and the gallery narrows to the charts that can read it, each drawing your rows.</p></article>
-      <article><h3>Five renderers, one spec</h3><p>Chart.js, D3, Canvas 2D, a custom engine and plain DOM sit behind one registry, so the editor never knows which one it is driving.</p></article>
+      <article><h3>Six renderers, one spec</h3><p>Chart.js, D3, ECharts, Canvas 2D, a custom engine and plain DOM sit behind one registry, so the editor never knows which one it is driving.</p></article>
       <article><h3>Private by design</h3><p>.xlsx, .csv, .tsv and JSON are parsed in the browser. There is no upload and no server.</p></article>
       <article><h3>AI hand-off</h3><p>Exports a prompt with the exact schema, the current table state and the chart's isolated source, so a model edits real code instead of guessing.</p></article>
       <article><h3>Accessible colour</h3><p>Live contrast and colour-blindness checks for any palette, plus screen-reader descriptions.</p></article>
@@ -177,6 +268,9 @@
 <span>payloads</span>275,280+
 <span>datasets</span>14 public sets unified into binary, multi-class and fine-grained labels
 <span>schema  </span>22 columns, identical in both modes</pre>
+    <h3 class="demo-h">Try it: attack one machine from another</h3>
+    <p class="demo-p">Two virtual machines, like the VirtualBox lab. Type a command into the attacker's terminal, or tap an attack, and watch the target take it: its CPU and connections climb, its log fills up, and sampled packets become labelled rows. It is a simulation, so there is nothing to download; the real project makes the data.</p>
+    <div class="demo"><iframe src="assets/demos/algen.html" title="Interactive lab: run an attack from the attacker machine and watch the target machine's traffic and logs" loading="lazy"></iframe></div>
     <p class="note">Python · Scikit-Learn · Pandas · NumPy · PyQt5 · Wireshark · VirtualBox · DVWA. Every attack runs against machines in an isolated lab.</p>
   </div>
 </section>
@@ -298,18 +392,64 @@
 
 </main>
 
-<footer class="s-foot">
-  <div class="wrap">
-    <p class="big">Happy to talk about .NET, back-end architecture, or computer vision on edge hardware.</p>
-    <p class="hero-links">
-      <a href="mailto:H.Salameh03@gju.edu.jo">H.Salameh03@gju.edu.jo</a>
-      <a href="https://www.linkedin.com/in/hamza-salameh-287a53258/">LinkedIn</a>
-      <a href="https://github.com/Hamza928505">GitHub</a>
-    </p>
-  </div>
-  <div class="stripe" aria-hidden="true"></div>
-</footer>
+<a class="to-top" href="#top"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Index</a>
+<script>
+// Each chart frame takes its chart's height, and grows when the chart's data table is opened.
+document.querySelectorAll('.live iframe, .demo iframe').forEach((frame) => {
+  const fit = () => {
+    const body = frame.contentDocument && frame.contentDocument.body;
+    if (!body) return; // opened from file://: the frame keeps its CSS height
+    new frame.contentWindow.ResizeObserver(() => {
+      frame.style.height = Math.ceil(body.getBoundingClientRect().height) + 'px';
+    }).observe(body);
+  };
+  frame.addEventListener('load', fit);
+});
 
-<a class="to-top" href="#top">Index ↑</a>
+// Motion. Blocks tip up as they arrive, section art leans with the scroll, cards tilt toward the pointer.
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const root = document.documentElement, hero = document.querySelector('.s-hero');
+  const io = new IntersectionObserver((hits) => hits.forEach((h) => {
+    if (h.isIntersecting) { h.target.classList.add('in'); io.unobserve(h.target); }
+  }), { rootMargin: '0px 0px -8% 0px' });
+  const seen = new Map();
+  document.querySelectorAll('.ly-head, .hero-links, .hero-more > *, .art, .lead, h2:not(.sr), .net li, .years article, .rig li, .pipeline li, .problems > div, .cards article, .facts li, .live figure, .tiles article, .checks li, .modes article, .attacks, .cols article, .also-grid article, .txt, .scores li, .wall article, .stamp, .demo-h, .demo-p, .demo').forEach((el) => {
+    const n = seen.get(el.parentNode) || 0;
+    seen.set(el.parentNode, n + 1);
+    el.style.setProperty('--i', Math.min(n, 8)); // siblings arrive one after another
+    el.classList.add('rv');
+    io.observe(el);
+  });
+
+  const tilt = (sel, max) => document.querySelectorAll(sel).forEach((el) => {
+    el.dataset.tilt = '';
+    el.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--rx', (-((e.clientY - r.top) / r.height - .5) * max).toFixed(2) + 'deg');
+      el.style.setProperty('--ry', (((e.clientX - r.left) / r.width - .5) * max).toFixed(2) + 'deg');
+    });
+    el.addEventListener('pointerleave', () => { el.style.removeProperty('--rx'); el.style.removeProperty('--ry'); });
+  });
+  tilt('.cards article, .years article, .tiles article, .also-grid article, .wall article, .scores li, .modes article, .checks li', 8);
+  tilt('.art', 3);
+
+  const arts = document.querySelectorAll('.art');
+  let queued = false;
+  const update = () => {
+    queued = false;
+    const vh = innerHeight;
+    root.style.setProperty('--hp', Math.min(1, scrollY / hero.offsetHeight).toFixed(3));
+    arts.forEach((a) => {
+      const r = a.getBoundingClientRect();
+      if (r.bottom < -100 || r.top > vh + 100) return;
+      a.style.setProperty('--p', Math.max(-1, Math.min(1, (r.top + r.height / 2 - vh / 2) / (vh / 2 + r.height / 2))).toFixed(3));
+    });
+  };
+  addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(update); } }, { passive: true });
+  addEventListener('resize', update);
+  update();
+}
+</script>
 </body>
 </html>

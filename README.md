@@ -17,7 +17,7 @@ Every project below was built for a different problem, so each one gets its own 
 
 ## Experience
 
-<img src="assets/umniah.svg" width="100%" alt="Umniah, Digital and IT. 2023 front end: 57 responsive pages. 2024 back end: login and user management with full CRUD in C# and .NET. 2025 full stack: a complaints system built alone, still in production.">
+<img src="assets/umniah.svg" width="100%" alt="Umniah by Beyon, Digital and IT: a 5G mast and a fibre line through three summers. 2023 front end: 57 responsive pages. 2024 back end: login and user management with full CRUD in C# and .NET. 2025 full stack: a complaints system built alone, still in production.">
 
 **Umniah**, Digital & IT Department · Dual Studies, July–October 2023, 2024 and 2025
 - **2023, front end:** 57 responsive pages in HTML, CSS, JavaScript, Bootstrap 5 and jQuery.
@@ -28,7 +28,7 @@ Every project below was built for a different problem, so each one gets its own 
 
 ## Projects
 
-<a href="https://hamza928505.github.io/VisualSentinel/"><img src="assets/visual-sentinel.svg" width="100%" alt="Visual Sentinel: edge-AI stereo vision for drone detection. 107 field experiments, 2 depth estimators, 0 cloud dependencies."></a>
+<a href="https://hamza928505.github.io/VisualSentinel/"><img src="assets/visual-sentinel.svg" width="100%" alt="Visual Sentinel: two Raspberry Pi nodes, each with a camera, IMU and GPS, locate a drone in 3D. 107 field experiments, 2 depth estimators, 0 cloud dependencies."></a>
 
 **Visual Sentinel**: graduation project, 2025–2026. Dual Raspberry Pi 4 nodes with Canon cameras, IMUs and GPS are synchronised by a C orchestrator. A fine-tuned YOLOv8 detects the drone, and its position is estimated two independent ways: IMU-corrected stereo triangulation, and *DroneDepthNet*, a PyTorch residual MLP over 26 engineered features. Results are projected to GPS on a Leaflet map, and SIFT + RANSAC homography super-resolves the airframe to check for payloads.
 [Live dashboard](https://hamza928505.github.io/VisualSentinel/) · [3D workstation](https://hamza928505.github.io/VisualSentinel/DigitalTwin.html)
@@ -39,7 +39,7 @@ Every project below was built for a different problem, so each one gets its own 
 
 <a href="https://hamza928505.github.io/OpenCharts/"><img src="assets/opencharts.svg" width="100%" alt="OpenCharts: 115 chart types you edit live and copy as HTML, CSS and JavaScript."></a>
 
-**OpenCharts**: 115 chart types across five renderers (Chart.js, D3, Canvas 2D, its own engine and the DOM), with no build step. *Match my data* narrows the gallery to the charts that can read your table, Excel and CSV are parsed in the browser, and every chart exports as code or as an AI prompt carrying the real schema. A headless Playwright suite in CI checks it all.
+**OpenCharts**: 115 chart types across six renderers (Chart.js, D3, ECharts, Canvas 2D, its own engine and the DOM), with no build step. *Match my data* narrows the gallery to the charts that can read your table, Excel and CSV are parsed in the browser, and every chart exports as code or as an AI prompt carrying the real schema. A headless Playwright suite in CI checks it all.
 [Live](https://hamza928505.github.io/OpenCharts/) · [Source](https://github.com/Hamza928505/OpenCharts)
 
 <a href="https://hamza928505.github.io/ExpenseTracker/"><img src="assets/expensetracker.svg" width="100%" alt="ExpenseTracker: a multi-currency finance PWA with no framework, no server and no account."></a>

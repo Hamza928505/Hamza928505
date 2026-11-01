@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My skills: jobs and projects against certificates</title>
+<!-- Libraries this chart needs, in load order -->
+<!-- Chart.js 4.4.1 (MIT, via jsDelivr) · https://www.chartjs.org/ -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  background: #ffffff;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+}
+
+.chart-card { width: 100%; max-width: 860px; }
+
+
+
+.chart-card {
+  /* The card is a figure now, and a figure carries a browser default
+     margin of 1em 40px that the card never wanted. */
+  margin: 0;
+  background: radial-gradient(circle at 50% 42%, #1c2750, #0b1022 72%);
+  border: 1px solid #2a3560;
+  border-radius: 16px;
+  padding: 20px;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  color: #e7ecff;
+}
+
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  height: 340px;
+}
+
+.chart-wrap canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #475569;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity .2s;
+}
+
+.legend-item.hidden { opacity: .35; }
+
+.legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: 0 0 10px;
+}
+
+.legend-swatch.line { width: 16px; height: 2px; border-radius: 1px; }
+
+
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.chart-data { margin-top: 14px; font-size: 13px; }
+.chart-data > summary {
+  cursor: pointer;
+  color: #475569;
+  padding: 4px 2px;
+  border-radius: 4px;
+}
+.chart-data > summary:focus-visible { outline: 2px solid #15803d; outline-offset: 2px; }
+/* Wide tables scroll in their own box; the page must never scroll sideways. */
+.chart-data-scroll { overflow-x: auto; margin-top: 8px; }
+.chart-data table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+.chart-data caption { text-align: left; padding-bottom: 6px; color: #5c6b80; font-size: 12px; }
+.chart-data th, .chart-data td {
+  padding: 4px 10px 4px 0;
+  text-align: left;
+  border-bottom: 1px solid rgba(128,128,128,.22);
+  white-space: nowrap;
+}
+.chart-data td { font-variant-numeric: tabular-nums; }
+
+
+html { scrollbar-width: none; }
+*, *::before, *::after { box-sizing: border-box; }
+body { display: block; min-height: 0; padding: 0; background: transparent; }
+.chart-wrap { height: min(90vw, 480px); }
+
+/* the web-slinger swings on a thread from the top of the web, behind the data */
+.chart-wrap { overflow: hidden; }
+.chart-wrap canvas { position: relative; z-index: 1; }
+.swing { position: absolute; left: 50%; top: -6%; width: 64px; height: 90%; margin-left: -32px; transform-origin: 50% 0; animation: swing 3.2s ease-in-out infinite alternate; pointer-events: none; }
+.swing i { position: absolute; left: 50%; top: 0; bottom: 72px; width: 2px; margin-left: -1px; background: linear-gradient(#ffffff, #b9c6ff); box-shadow: 0 0 6px #b9c6ff; }
+.swing svg { position: absolute; bottom: 0; left: 50%; width: 64px; height: 80px; margin-left: -32px; transform-origin: 50% 4px; animation: kick 3.2s ease-in-out infinite alternate; }
+@keyframes swing { from { transform: rotate(-34deg); } to { transform: rotate(34deg); } }
+@keyframes kick { from { transform: rotate(16deg); } to { transform: rotate(-16deg); } }
+@media (prefers-reduced-motion: reduce) { .swing, .swing svg { animation: none; } .swing { transform: rotate(-24deg); } }
+.legend-item { color: #c9d4ff; }
+.chart-data > summary, .chart-data caption { color: #b7c3f0; }
+.chart-data th, .chart-data td { color: #e7ecff; }
+</style>
+</head>
+<body>
+
+<figure class="chart-card" aria-describedby="chart-desc">
+  <p id="chart-desc" class="visually-hidden">Radar of ten of my skills. One shape counts how many of my 14 jobs and projects used each skill: C# and .NET 4, SQL 4, JavaScript 7, HTML and CSS 8, Python 3, machine learning 2, computer vision 1, LLMs and agents 2, Linux 2, security 3. The other counts the certificates that cover it: C# and .NET 1, machine learning 2, computer vision 1, LLMs and agents 7, Linux 3, security 2, and none for the rest. The underlying data follows as a table.</p>
+  <div class="chart-wrap"><div class="swing" aria-hidden="true"><i></i><svg viewBox="0 0 46 58" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 31L31 42L38 49" stroke="#2155E8" stroke-width="5"/><path d="M18 32L10 45L16 56" stroke="#2155E8" stroke-width="5"/>
+    <path d="M23 5L21 21" stroke="#E5303F" stroke-width="5"/><path d="M26 31L38 36" stroke="#E5303F" stroke-width="5"/>
+    <path d="M15 31h12l1 13H14z" fill="#E5303F" stroke="#0b1022" stroke-width="1.2"/><path d="M14 40h14l.5 4H13.5z" fill="#2155E8"/>
+    <path d="M21 34v6M18 35.5l6 3M24 35.5l-6 3" stroke="#0b1022" stroke-width="1.1"/>
+    <circle cx="21" cy="24" r="7.5" fill="#E5303F" stroke="#0b1022" stroke-width="1.2"/>
+    <path d="M21 16.5v15M13.5 24h15M15.5 19l11 10M26.5 19l-11 10" stroke="#0b1022" stroke-width=".5" opacity=".55"/>
+    <ellipse cx="17.6" cy="23.5" rx="2.8" ry="1.6" transform="rotate(22 17.6 23.5)" fill="#fff" stroke="#0b1022" stroke-width=".9"/><ellipse cx="24.4" cy="23.5" rx="2.8" ry="1.6" transform="rotate(-22 24.4 23.5)" fill="#fff" stroke="#0b1022" stroke-width=".9"/>
+  </svg></div>
+  <canvas id="chart" role="img" aria-label="Radar: ten of my skills, jobs and projects against certificates"></canvas></div>
+  <div class="legend" id="legend"></div>
+  <details class="chart-data">
+    <summary>View the data as a table</summary>
+    <div class="chart-data-scroll">
+      <table>
+        <caption>My skills: jobs and projects against certificates</caption>
+        <thead><tr><th scope="col">skill</th><th scope="col">Jobs &amp; projects</th><th scope="col">Certificates</th></tr></thead>
+        <tbody><tr><th scope="row">C# / .NET</th><td>4</td><td>1</td></tr><tr><th scope="row">SQL</th><td>4</td><td>0</td></tr><tr><th scope="row">JavaScript</th><td>7</td><td>0</td></tr><tr><th scope="row">HTML &amp; CSS</th><td>8</td><td>0</td></tr><tr><th scope="row">Python</th><td>3</td><td>0</td></tr><tr><th scope="row">Machine learning</th><td>2</td><td>2</td></tr><tr><th scope="row">Computer vision</th><td>1</td><td>1</td></tr><tr><th scope="row">LLMs &amp; agents</th><td>2</td><td>7</td></tr><tr><th scope="row">Linux</th><td>2</td><td>3</td></tr><tr><th scope="row">Security</th><td>3</td><td>2</td></tr></tbody>
+      </table>
+    </div>
+  </details>
+</figure>
+
+<script>
+// Radar — Comparison — Chart.js
+//
+// Requires this script on the page, in this order:
+//   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"><\/script>
+//     Chart.js 4.4.1 (MIT, via jsDelivr) — https://www.chartjs.org/
+
+function effectRgb(color) {
+  if (typeof color !== 'string') return null;
+  const raw = color.trim().toLowerCase();
+  if (raw[0] === '#') {
+    const hex = raw.slice(1);
+    if (![3, 4, 6, 8].includes(hex.length) || !/^[0-9a-f]+$/.test(hex)) return null;
+    const full = hex.length <= 4 ? [...hex].map((c) => c + c).join('') : hex;
+    return [0, 2, 4].map((i) => parseInt(full.slice(i, i + 2), 16))
+      .concat(full.length === 8 ? +(parseInt(full.slice(6), 16) / 255).toFixed(4) : 1);
+  }
+  const match = raw.match(/^(rgba?|hsla?)\((.*)\)$/);
+  if (!match) return null;
+  const parts = match[2].replace(/,/g, ' ').replace(/\s*\/\s*/g, ' ').trim().split(/\s+/);
+  if (parts.length < 3) return null;
+  const alpha = parts[3] == null ? 1 : (parts[3].endsWith('%') ? parseFloat(parts[3]) / 100 : Number(parts[3]));
+  if (!Number.isFinite(alpha)) return null;
+  if (match[1].startsWith('rgb')) {
+    const rgb = parts.slice(0, 3).map((v) => v.endsWith('%') ? parseFloat(v) * 2.55 : Number(v));
+    return rgb.every(Number.isFinite) ? [...rgb, Math.min(1, Math.max(0, alpha))] : null;
+  }
+  const h = parseFloat(parts[0]);
+  const s = parseFloat(parts[1]) / 100;
+  const l = parseFloat(parts[2]) / 100;
+  if (![h, s, l].every(Number.isFinite)) return null;
+  const a = s * Math.min(l, 1 - l);
+  const channel = (n) => {
+    const k = (n + h / 30) % 12;
+    return Math.round(255 * (l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1))));
+  };
+  return [channel(0), channel(8), channel(4), Math.min(1, Math.max(0, alpha))];
+}
+function lighten(color, amount) {
+  const rgb = effectRgb(color);
+  if (!rgb) return color;
+  const t = Math.min(1, Math.max(0, amount));
+  return `rgba(${rgb.slice(0, 3).map((v) => Math.round(v + (255 - v) * t)).join(',')},${rgb[3]})`;
+}
+function darken(color, amount) {
+  const rgb = effectRgb(color);
+  if (!rgb) return color;
+  const t = Math.min(1, Math.max(0, amount));
+  return `rgba(${rgb.slice(0, 3).map((v) => Math.round(v * (1 - t))).join(',')},${rgb[3]})`;
+}
+function withAlpha(color, alpha) {
+  const rgb = effectRgb(color);
+  if (!rgb) return color;
+  return `rgba(${rgb.slice(0, 3).map(Math.round).join(',')},${+(rgb[3] * Math.min(1, Math.max(0, alpha))).toFixed(4)})`;
+}
+function effectTheme() {
+  if (window.matchMedia && window.matchMedia('print').matches) return 0.12;
+  const theme = document.documentElement.dataset.theme;
+  const dark = theme === 'dark' || (theme !== 'light' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  return dark ? 1 : 0.32;
+}
+function chartFill(context) {
+  const ds = context.dataset;
+  const raw = ds._ocFill;
+  const color = typeof raw === 'function' ? raw(context)
+    : Array.isArray(raw) ? raw[(context.dataIndex || 0) % raw.length] : raw;
+  const fx = ds._ocEffects;
+  if (!fx?.enabled || !fx.gradient || !effectRgb(color)) return color;
+  const { chart, element } = context;
+  const area = chart.chartArea;
+  if (!area) return color;
+  const strength = fx.gradient * (0.5 + effectTheme() * 0.5);
+  const type = ds.type || chart.config.type;
+  let gradient;
+  if (['pie', 'doughnut', 'polarArea', 'radar', 'bubble', 'scatter'].includes(type) && element?.x != null) {
+    const radius = Math.max(1, element.outerRadius || element.radius || element.options?.radius || 12);
+    gradient = chart.ctx.createRadialGradient(element.x - radius * 0.2, element.y - radius * 0.2, 0, element.x, element.y, radius);
+  } else if (chart.options.indexAxis === 'y' && element?.base != null) {
+    gradient = chart.ctx.createLinearGradient(Math.min(element.x, element.base), 0, Math.max(element.x, element.base), 0);
+  } else {
+    const top = element?.base != null && element?.y != null ? Math.min(element.y, element.base)
+      : element?.height ? element.y - element.height / 2 : area.top;
+    const bottom = element?.base != null && element?.y != null ? Math.max(element.y, element.base)
+      : element?.height ? element.y + element.height / 2 : area.bottom;
+    if (bottom - top < 1) return color;
+    gradient = chart.ctx.createLinearGradient(0, top, 0, bottom);
+  }
+  gradient.addColorStop(0, lighten(color, 0.36 * strength));
+  gradient.addColorStop(1, type === 'line'
+    ? withAlpha(darken(color, 0.22 * strength), 0.35)
+    : darken(color, 0.22 * strength));
+  return gradient;
+}
+function chartStroke(context) {
+  const ds = context.dataset;
+  const color = ds._ocStroke;
+  const fx = ds._ocEffects;
+  const area = context.chart.chartArea;
+  if (!fx?.enabled || !fx.gradient || !area || !effectRgb(color)) return color;
+  const strength = fx.gradient * (0.5 + effectTheme() * 0.5);
+  const gradient = context.chart.ctx.createLinearGradient(area.left, area.top, area.right, area.bottom);
+  gradient.addColorStop(0, lighten(color, 0.36 * strength));
+  gradient.addColorStop(1, darken(color, 0.22 * strength));
+  return gradient;
+}
+
+const config = {
+  type: 'radar',
+  data: {
+    labels: [
+      'C# / .NET',
+      'SQL',
+      'JavaScript',
+      'HTML & CSS',
+      'Python',
+      'Machine learning',
+      'Computer vision',
+      'LLMs & agents',
+      'Linux',
+      'Security'
+    ],
+    datasets: [
+      {
+        label: 'Jobs & projects',
+        data: [4, 4, 7, 8, 3, 2, 1, 2, 2, 3],
+        borderColor: '#FF3B4E',
+        backgroundColor: function chartFill(context) {
+          const ds = context.dataset;
+          const raw = ds._ocFill;
+          const color = typeof raw === 'function' ? raw(context)
+            : Array.isArray(raw) ? raw[(context.dataIndex || 0) % raw.length] : raw;
+          const fx = ds._ocEffects;
+          if (!fx?.enabled || !fx.gradient || !effectRgb(color)) return color;
+          const { chart, element } = context;
+          const area = chart.chartArea;
+          if (!area) return color;
+          const strength = fx.gradient * (0.5 + effectTheme() * 0.5);
+          const type = ds.type || chart.config.type;
+          let gradient;
+          if (['pie', 'doughnut', 'polarArea', 'radar', 'bubble', 'scatter'].includes(type) && element?.x != null) {
+            const radius = Math.max(1, element.outerRadius || element.radius || element.options?.radius || 12);
+            gradient = chart.ctx.createRadialGradient(element.x - radius * 0.2, element.y - radius * 0.2, 0, element.x, element.y, radius);
+          } else if (chart.options.indexAxis === 'y' && element?.base != null) {
+            gradient = chart.ctx.createLinearGradient(Math.min(element.x, element.base), 0, Math.max(element.x, element.base), 0);
+          } else {
+            const top = element?.base != null && element?.y != null ? Math.min(element.y, element.base)
+              : element?.height ? element.y - element.height / 2 : area.top;
+            const bottom = element?.base != null && element?.y != null ? Math.max(element.y, element.base)
+              : element?.height ? element.y + element.height / 2 : area.bottom;
+            if (bottom - top < 1) return color;
+            gradient = chart.ctx.createLinearGradient(0, top, 0, bottom);
+          }
+          gradient.addColorStop(0, lighten(color, 0.36 * strength));
+          gradient.addColorStop(1, type === 'line'
+            ? withAlpha(darken(color, 0.22 * strength), 0.35)
+            : darken(color, 0.22 * strength));
+          return gradient;
+        },
+        pointBackgroundColor: '#FF3B4E',
+        pointBorderColor: '#FF3B4E',
+        borderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        fill: true,
+        _ocEffects: { enabled: true, glow: 0.5, gradient: 0.6, shadow: 0.4 },
+        _ocGlowColor: '#FF3B4E',
+        _ocFill: '#FF3B4E40'
+      },
+      {
+        label: 'Certificates',
+        data: [1, 0, 0, 0, 0, 2, 1, 7, 3, 2],
+        borderColor: '#3D8BFF',
+        backgroundColor: function chartFill(context) {
+          const ds = context.dataset;
+          const raw = ds._ocFill;
+          const color = typeof raw === 'function' ? raw(context)
+            : Array.isArray(raw) ? raw[(context.dataIndex || 0) % raw.length] : raw;
+          const fx = ds._ocEffects;
+          if (!fx?.enabled || !fx.gradient || !effectRgb(color)) return color;
+          const { chart, element } = context;
+          const area = chart.chartArea;
+          if (!area) return color;
+          const strength = fx.gradient * (0.5 + effectTheme() * 0.5);
+          const type = ds.type || chart.config.type;
+          let gradient;
+          if (['pie', 'doughnut', 'polarArea', 'radar', 'bubble', 'scatter'].includes(type) && element?.x != null) {
+            const radius = Math.max(1, element.outerRadius || element.radius || element.options?.radius || 12);
+            gradient = chart.ctx.createRadialGradient(element.x - radius * 0.2, element.y - radius * 0.2, 0, element.x, element.y, radius);
+          } else if (chart.options.indexAxis === 'y' && element?.base != null) {
+            gradient = chart.ctx.createLinearGradient(Math.min(element.x, element.base), 0, Math.max(element.x, element.base), 0);
+          } else {
+            const top = element?.base != null && element?.y != null ? Math.min(element.y, element.base)
+              : element?.height ? element.y - element.height / 2 : area.top;
+            const bottom = element?.base != null && element?.y != null ? Math.max(element.y, element.base)
+              : element?.height ? element.y + element.height / 2 : area.bottom;
+            if (bottom - top < 1) return color;
+            gradient = chart.ctx.createLinearGradient(0, top, 0, bottom);
+          }
+          gradient.addColorStop(0, lighten(color, 0.36 * strength));
+          gradient.addColorStop(1, type === 'line'
+            ? withAlpha(darken(color, 0.22 * strength), 0.35)
+            : darken(color, 0.22 * strength));
+          return gradient;
+        },
+        pointBackgroundColor: '#3D8BFF',
+        pointBorderColor: '#3D8BFF',
+        borderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        fill: true,
+        _ocEffects: { enabled: true, glow: 0.5, gradient: 0.6, shadow: 0.4 },
+        _ocGlowColor: '#FF3B4E',
+        _ocFill: '#3D8BFF40'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { intersect: false, mode: 'nearest' },
+    animation: { duration: 620, easing: 'easeOutQuart' },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: 'rgba(23,22,20,.92)',
+        titleColor: '#f5f4ef',
+        bodyColor: '#d8d6cf',
+        borderColor: 'rgba(255,255,255,.1)',
+        borderWidth: 1,
+        padding: 10,
+        cornerRadius: 8,
+        boxPadding: 4,
+        displayColors: true
+      }
+    },
+    scales: {
+      r: {
+        min: 0,
+        ticks: {
+          stepSize: 2,
+          font: { size: 10 },
+          color: '#9fb0e6',
+          backdropColor: 'transparent'
+        },
+        pointLabels: { font: (c) => ({ size: c.chart.width < 400 ? 10 : 12, weight: '600' }), color: '#dbe3ff' },
+        grid: { display: false },
+        angleLines: { display: false },
+        max: 8
+      }
+    }
+  },
+  plugins: [
+    {
+      // A spider's web instead of a grid: spokes to each skill, and silk rings that sag toward the middle between spokes.
+      id: 'web',
+      beforeDatasetsDraw: function (chart) {
+        const r = chart.scales.r, ctx = chart.ctx, n = chart.data.labels.length;
+        const cx = r.xCenter, cy = r.yCenter, rings = r.max / 2;
+        const at = (i, v) => r.getPointPositionForValue(i % n, v);
+        ctx.save();
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = 'rgba(214,224,255,.6)';
+        ctx.lineWidth = 1.3;
+        for (let i = 0; i < n; i++) { const p = at(i, r.max); ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(p.x, p.y); ctx.stroke(); }
+        for (let k = 1; k <= rings; k++) {
+          ctx.lineWidth = k === rings ? 1.6 : 1;
+          ctx.beginPath();
+          for (let i = 0; i < n; i++) {
+            const a = at(i, k * 2), b = at(i + 1, k * 2);
+            const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+            if (i === 0) ctx.moveTo(a.x, a.y);
+            ctx.quadraticCurveTo(mx + (cx - mx) * 0.22, my + (cy - my) * 0.22, b.x, b.y);
+          }
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+    },
+    {
+      id: 'ocNeon',
+      beforeDatasetDraw: function beforeDatasetDraw(chart, args) {
+        const ds = chart.data.datasets[args.index];
+        const fx = ds._ocEffects;
+        const count = chart.data.datasets.reduce((n, d) => n + (d.data?.length || 0), 0);
+        chart.ctx.save();
+        if (!fx?.enabled) return;
+        // Chart.js resolves scriptable colors before its first chartArea exists.
+        // Refresh the paint after layout, using each mark's actual bounds.
+        const meta = chart.getDatasetMeta(args.index);
+        for (let i = 0; i < meta.data.length; i++) {
+          const element = meta.data[i];
+          if (ds._ocFill && chart.config.type !== 'matrix' && element.options) {
+            const context = meta.controller.getContext(i);
+            element.options.backgroundColor = chartFill({ ...context, chart, dataset: ds, element, dataIndex: i });
+          }
+        }
+        if (ds._ocFill && chart.config.type !== 'matrix' && meta.dataset?.options) {
+          meta.dataset.options.backgroundColor = chartFill({ chart, dataset: ds, element: meta.dataset });
+        }
+        if (ds._ocStroke && meta.dataset?.options) {
+          meta.dataset.options.borderColor = chartStroke({ chart, dataset: ds });
+        }
+        if (count > 2000) return;
+        const raw = ds._ocStroke || ds._ocGlowColor || ds._ocFill;
+        const color = Array.isArray(raw) ? raw[0] : raw;
+        if (!effectRgb(color)) return;
+        const theme = effectTheme();
+        const weight = chart.config.type === 'matrix' ? 0.12
+          : ['sankey', 'treemap', 'boxplot'].includes(chart.config.type) ? 0.35 : 1;
+        chart.ctx.shadowColor = withAlpha(color, Math.min(0.6, fx.glow * 1.1 * theme * weight));
+        chart.ctx.shadowBlur = Math.min(16, fx.glow * 24 * theme * weight);
+        chart.ctx.shadowOffsetY = Math.min(4, fx.shadow * 5 * theme);
+      },
+      afterDatasetDraw: function afterDatasetDraw(chart) { chart.ctx.restore(); }
+    }
+  ]
+};
+
+const chart = new Chart(document.getElementById('chart'), config);
+window.addEventListener('beforeprint', () => chart.update('none'));
+window.addEventListener('afterprint', () => chart.update('none'));
+
+const legendItems = [
+  {
+    label: 'Jobs & projects',
+    color: '#FF3B4E',
+    line: true,
+    datasetIndex: 0
+  },
+  { label: 'Certificates', color: '#3D8BFF', line: true, datasetIndex: 1 }
+];
+
+function buildLegend(containerId, items) {
+  const host = document.getElementById(containerId);
+  if (!host) return;
+  host.innerHTML = '';
+  items.forEach((item) => {
+    const el = document.createElement('span');
+    el.className = 'legend-item';
+    const sw = document.createElement('span');
+    sw.className = 'legend-swatch' + (item.line ? ' line' : '');
+    sw.style.background = item.color;
+    const text = document.createElement('span');
+    text.textContent = item.label;
+    el.append(sw, text);
+    if (item.datasetIndex != null) {
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', () => {
+        const meta = chart.getDatasetMeta(item.datasetIndex);
+        meta.hidden = !meta.hidden;
+        el.classList.toggle('hidden', !!meta.hidden);
+        chart.update();
+      });
+    }
+    host.appendChild(el);
+  });
+}
+
+buildLegend('legend', legendItems);
+
+</script>
+</body>
+</html>

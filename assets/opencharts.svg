@@ -26,7 +26,7 @@
   <text x="48" y="222" class="p">Bring a table and it shows only the</text>
   <text x="48" y="246" class="p">charts that can actually read it.</text>
 </g>
-<text x="48" y="290" class="m f">5 renderers · Playwright E2E in CI · zero build step</text>
+<text x="48" y="290" class="m f">6 renderers · Playwright E2E in CI · zero build step</text>
 <g filter="url(#sh)">
   <rect x="540" y="36" width="180" height="120" rx="12" fill="#FFFFFF" stroke="#E2E4EE"/>
   <rect x="736" y="36" width="180" height="120" rx="12" fill="#FFFFFF" stroke="#E2E4EE"/>
